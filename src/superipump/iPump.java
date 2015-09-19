@@ -958,6 +958,7 @@ public class iPump extends javax.swing.JFrame {
         this.Port = port;
         
         cliente = new ClienteSocket(Ip, Port);
+        
     }
     
     
