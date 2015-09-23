@@ -57,8 +57,12 @@ public class iPump extends javax.swing.JFrame {
     private float Kp = 0;
     private float Ki = 0;
     private float Kd = 0;
+    private int Tr = 0;
+    private int Mp = 0;
+    private int Ts = 0;
+    private int tanque = 1;  // 1 - tq_sup (default) | 2 - tq_inf | 3 - ambos
+    private int controle;
     private String sinal;
-    private String controle;
 
     // Variaveis de conexão
     private String Ip = "localhost";
@@ -70,13 +74,29 @@ public class iPump extends javax.swing.JFrame {
      */
     public iPump() {
         initComponents();
-        
+
         //Criando o gráfcio do tanque 1
         createChartTQ1();
         //Criando o gráfcio do tanque 2
         createChartTQ2();
 
         revalidate();
+
+        //listener para o combobox do tanque a ser controlado
+        select_tanque.addActionListener((ActionEvent e) -> {
+            int index = select_tanque.getSelectedIndex();
+
+            switch (index) {
+                case 0: // controlar o tanque superior | default
+                    tanque = 1;
+                    break;
+                case 1: // controlar o tanque inferior
+                    tanque = 2;
+                    break;
+                case 2: // controlar ambos os tanques
+                    tanque = 3;
+            }
+        });
 
         //listener para o combobox dos sinais de controle
         select_sinal.addActionListener((ActionEvent e) -> {
@@ -143,39 +163,54 @@ public class iPump extends javax.swing.JFrame {
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = "P";
+                    controle = 1;
                     break;
                 case 2: // tipo PI
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(false);
-                    controle = "PI";
+                    controle = 2;
                     break;
                 case 3: // tipo PD
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(true);
-                    controle = "PD";
+                    controle = 3;
                     break;
                 case 4: // tipo PID
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = "PID";
+                    controle = 4;
                     break;
                 case 5: // tipo PI-D
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = "PI-D";
+                    controle = 5;
                     break;
                 default: // nenhum tipo escolhido
                     input_kp.setEnabled(false);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = "";
+                    controle = 0;
                     break;
             }
+        });
+
+        //listener para o combobox do calculo de Mp
+        select_mp.addActionListener((ActionEvent e) -> {
+            Mp = select_mp.getSelectedIndex() + 1;
+        });
+
+        //listener para o combobox do calculo de Tr
+        select_tr.addActionListener((ActionEvent e) -> {
+            Tr = select_tr.getSelectedIndex() + 1;
+        });
+
+        //listener para o combobox do calculo de Ts
+        select_ts.addActionListener((ActionEvent e) -> {
+            Ts = select_ts.getSelectedIndex() + 1;
         });
 
     }
@@ -235,6 +270,8 @@ public class iPump extends javax.swing.JFrame {
         input_periodo_max = new javax.swing.JTextField();
         input_amplitude_max = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
+        select_tanque = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("iPump Supervisório - Turma 3 | Grupo 3");
@@ -408,15 +445,21 @@ public class iPump extends javax.swing.JFrame {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        select_tanque.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tanque 1", "Tanque 2", "Ambos" }));
+
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel3.setText("Qual tanque controlar ?");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btn_emergencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_emergencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -426,9 +469,13 @@ public class iPump extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_nivel_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(btn_malha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_windup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_enviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn_malha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_windup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_enviar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(select_tanque, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -499,7 +546,7 @@ public class iPump extends javax.swing.JFrame {
                             .addComponent(input_ess, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(panel_chart_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
                     .addComponent(panel_chart_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,20 +630,24 @@ public class iPump extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pbar_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(pbar_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbl_nivel_tq2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(select_tanque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_malha, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -633,6 +684,10 @@ public class iPump extends javax.swing.JFrame {
                         .add("comando", 1)
                         .add("malha_aberta", true)
                         .add("com_sinal", true)
+                        .add("tanque", tanque)
+                        .add("Tr", Tr)
+                        .add("Ts", Ts)
+                        .add("Mp", Mp)
                         .add("sinal", Json.createArrayBuilder()
                                 .add(Json.createObjectBuilder()
                                         .add("tipo", sinal)
@@ -672,6 +727,10 @@ public class iPump extends javax.swing.JFrame {
                             .add("comando", 1)
                             .add("malha_aberta", false)
                             .add("com_sinal", true)
+                            .add("tanque", tanque)
+                            .add("Tr", Tr)
+                            .add("Ts", Ts)
+                            .add("Mp", Mp)
                             .add("sinal", Json.createArrayBuilder()
                                     .add(Json.createObjectBuilder()
                                             .add("tipo", sinal)
@@ -697,7 +756,7 @@ public class iPump extends javax.swing.JFrame {
                     String sendData = cliente.sendData(jsonData);
                     System.out.println(sendData);
                     //---------------------------------------------
-                    
+
                 }
             }
         }
@@ -863,6 +922,14 @@ public class iPump extends javax.swing.JFrame {
 
     }
 
+    public void setDataCalc(float tr, float tp, float ts, float mp, float ess) {
+        input_tr.setText(tr + "");
+        input_tp.setText(tp + "");
+        input_ts.setText(ts + "");
+        input_mp.setText(mp + "");
+        input_ess.setText(ess + "");
+    }
+
     private void createChartTQ1() {
         final XYDataset dataset = createDatasetTQ1();
         final JFreeChart chart = createChartTQ(dataset);
@@ -953,15 +1020,14 @@ public class iPump extends javax.swing.JFrame {
 
     }
 
-    public void setConnVars(String ip, int port){
+    public void setConnVars(String ip, int port) {
         this.Ip = ip;
         this.Port = port;
-        
+
         cliente = new ClienteSocket(Ip, Port);
-        
+
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -1026,6 +1092,7 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1042,6 +1109,7 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JComboBox select_controle;
     private javax.swing.JComboBox select_mp;
     private javax.swing.JComboBox select_sinal;
+    private javax.swing.JComboBox select_tanque;
     private javax.swing.JComboBox select_tr;
     private javax.swing.JComboBox select_ts;
     // End of variables declaration//GEN-END:variables

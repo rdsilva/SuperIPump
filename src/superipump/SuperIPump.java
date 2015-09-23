@@ -29,23 +29,32 @@ public class SuperIPump {
     private static float sptq2;
     private static float mvtq2;
     private static float pvtq2;
+    private static float tp;
+    private static float tr;
+    private static float ts;
+    private static float mp;
+    private static float ess;
 
     private static ClienteSocket cliente;//  = new ClienteSocket();
 
     public static void main(String[] args) {
-        
+
         iPump view = new iPump();
         view.setVisible(true);
         view.setEnabled(true);
 
-        String input_ip = JOptionPane.showInputDialog("IP do Middleware:");
-        int input_port = Integer.parseInt(JOptionPane.showInputDialog("Port do Middleware:"));
+//        String input_ip = JOptionPane.showInputDialog("IP do Middleware:");
+        String input_ip = (String) JOptionPane.showInputDialog(null, "IP do Middleware:",
+                "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "localhost");
         
+//        int input_port = Integer.parseInt(JOptionPane.showInputDialog("Port do Middleware:"));
+        int input_port = Integer.parseInt(JOptionPane.showInputDialog(null, "Port do Middleware:",
+                "Port do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, 8002).toString());
+
         cliente = new ClienteSocket(input_ip, input_port);
-        
+
         view.setConnVars(input_ip, input_port);
-        
-        
+
         //---------------------------------------------JSON
         JsonObject json = Json.createObjectBuilder().add("comando", 0).build();
         StringWriter stWriter = new StringWriter();
@@ -63,6 +72,7 @@ public class SuperIPump {
                     parseJSON(cliente.sendData(jsonData));
                     view.setDataTQ1(sptq1, mvtq1, pvtq1);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2);
+                    view.setDataCalc(tr, tp, ts, mp, ess);
                     Thread.sleep(1000L);
                 }
             } catch (InterruptedException iex) {
@@ -86,6 +96,11 @@ public class SuperIPump {
             mvtq2 = Float.parseFloat(obj.get("mvtq_2").toString());
             pvtq1 = Float.parseFloat(obj.get("pvtq_1").toString());
             pvtq2 = Float.parseFloat(obj.get("pvtq_2").toString());
+            tp = Float.parseFloat(obj.get("tp").toString());
+            tr = Float.parseFloat(obj.get("tr").toString());
+            ts = Float.parseFloat(obj.get("ts").toString());
+            mp = Float.parseFloat(obj.get("mp").toString());
+            ess = Float.parseFloat(obj.get("ess").toString());
 
         } catch (ParseException ex) {
             Logger.getLogger(SuperIPump.class

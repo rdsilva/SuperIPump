@@ -45,7 +45,7 @@ public class ClienteSocket {
 //            }
 //
 //            String jsonData = stWriter.toString();
-//            System.out.println(jsonData);
+            System.out.println(jsonData);
 
             //-------------------------------------------------
             //Send the message to the server
