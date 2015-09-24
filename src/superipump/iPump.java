@@ -9,14 +9,12 @@ import Testes.ClienteSocket;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.StringWriter;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
@@ -680,27 +678,31 @@ public class iPump extends javax.swing.JFrame {
                         JOptionPane.ERROR_MESSAGE);
             } else {
                 //---------------------------------------------JSON
-                JsonObject json = Json.createObjectBuilder()
-                        .add("comando", 1)
+
+                JsonObjectBuilder json = Json.createObjectBuilder();
+                JsonObjectBuilder json_sinal = Json.createObjectBuilder();
+                json_sinal.add("tipo", sinal)
+                        .add("amp_max", amplitude_max)
+                        .add("amp_min", amplitude_min)
+                        .add("periodo_max", periodo_max)
+                        .add("periodo_min", periodo_min)
+                        .add("offset", offset);
+
+                json.add("comando", 1)
                         .add("malha_aberta", true)
-                        .add("com_sinal", true)
                         .add("tanque", tanque)
                         .add("Tr", Tr)
                         .add("Ts", Ts)
-                        .add("Mp", Mp)
-                        .add("sinal", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
-                                        .add("tipo", sinal)
-                                        .add("amp_max", amplitude_max)
-                                        .add("amp_min", amplitude_min)
-                                        .add("periodo_max", periodo_max)
-                                        .add("periodo_min", periodo_min)
-                                        .add("offset", offset)))
-                        .build();
+                        .add("Mp", Mp);
+
+                json.add("sinal", json_sinal);
+
+                JsonObject json_final = json.build();
+
                 StringWriter stWriter = new StringWriter();
 
                 try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
-                    jsonWriter.writeObject(json);
+                    jsonWriter.writeObject(json_final);
                 }
 
                 String jsonData = stWriter.toString();
@@ -723,33 +725,38 @@ public class iPump extends javax.swing.JFrame {
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     //---------------------------------------------JSON
-                    JsonObject json = Json.createObjectBuilder()
-                            .add("comando", 1)
+
+                    JsonObjectBuilder json = Json.createObjectBuilder();
+                    JsonObjectBuilder json_sinal = Json.createObjectBuilder();
+                    JsonObjectBuilder json_ctrl = Json.createObjectBuilder();
+                    json_sinal.add("tipo", sinal)
+                            .add("amp_max", amplitude_max)
+                            .add("amp_min", amplitude_min)
+                            .add("periodo_max", periodo_max)
+                            .add("periodo_min", periodo_min)
+                            .add("offset", offset);
+
+                    json_ctrl.add("tipo", controle)
+                            .add("Kp", Kp)
+                            .add("Ki", Ki)
+                            .add("Kd", Kd);
+
+                    json.add("comando", 1)
                             .add("malha_aberta", false)
-                            .add("com_sinal", true)
                             .add("tanque", tanque)
                             .add("Tr", Tr)
                             .add("Ts", Ts)
-                            .add("Mp", Mp)
-                            .add("sinal", Json.createArrayBuilder()
-                                    .add(Json.createObjectBuilder()
-                                            .add("tipo", sinal)
-                                            .add("amp_max", amplitude_max)
-                                            .add("amp_min", amplitude_min)
-                                            .add("periodo_max", periodo_max)
-                                            .add("periodo_min", periodo_min)
-                                            .add("offset", offset)))
-                            .add("controle", Json.createArrayBuilder()
-                                    .add(Json.createObjectBuilder()
-                                            .add("tipo", controle)
-                                            .add("Kp", Kp)
-                                            .add("Ki", Ki)
-                                            .add("Kd", Kd)))
-                            .build();
+                            .add("Mp", Mp);
+
+                    json.add("sinal", json_sinal);
+                    json.add("controle", json_ctrl);
+
+                    JsonObject json_final = json.build();
+
                     StringWriter stWriter = new StringWriter();
 
                     try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
-                        jsonWriter.writeObject(json);
+                        jsonWriter.writeObject(json_final);
                     }
 
                     String jsonData = stWriter.toString();
@@ -767,8 +774,10 @@ public class iPump extends javax.swing.JFrame {
     private void btn_windupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_windupActionPerformed
         if (btn_windup.isSelected()) {
             btn_windup.setText("Anti - WindUP (on)");
+            anti_windup = true;
         } else {
             btn_windup.setText("Anti - WindUP (off)");
+            anti_windup = false;
         }
     }//GEN-LAST:event_btn_windupActionPerformed
 
