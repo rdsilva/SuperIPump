@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.StringWriter;
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
@@ -47,19 +46,19 @@ public class iPump extends javax.swing.JFrame {
     // Variaveis de controle da planta
     private boolean malha_aberta = true;
     private boolean anti_windup = false;
-    private float amplitude_min = 0;
-    private float amplitude_max = 0;
-    private float periodo_min = 0;
-    private float periodo_max = 0;
-    private float offset = 0;
-    private float Kp = 0;
-    private float Ki = 0;
-    private float Kd = 0;
+    private double amplitude_min = 0;
+    private double amplitude_max = 0;
+    private double periodo_min = 0;
+    private double periodo_max = 0;
+    private double offset = 0;
+    private double Kp = 0;
+    private double Ki = 0;
+    private double Kd = 0;
     private int Tr = 0;
     private int Mp = 0;
     private int Ts = 0;
     private int tanque = 1;  // 1 - tq_sup (default) | 2 - tq_inf | 3 - ambos
-    private int controle;
+    private String controle;
     private String sinal;
 
     // Variaveis de conexão
@@ -161,37 +160,37 @@ public class iPump extends javax.swing.JFrame {
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = 1;
+                    controle = "P";
                     break;
                 case 2: // tipo PI
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(false);
-                    controle = 2;
+                    controle = "PI";
                     break;
                 case 3: // tipo PD
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(true);
-                    controle = 3;
+                    controle = "PD";
                     break;
                 case 4: // tipo PID
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = 4;
+                    controle = "PID";
                     break;
                 case 5: // tipo PI-D
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = 5;
+                    controle = "PI-D";
                     break;
                 default: // nenhum tipo escolhido
                     input_kp.setEnabled(false);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = 0;
+                    controle = "";
                     break;
             }
         });
@@ -800,7 +799,7 @@ public class iPump extends javax.swing.JFrame {
         //Amplitude Maxima
         if (input_amplitude_max.isEnabled()) {
             if (!input_amplitude_max.getText().isEmpty()) {
-                amplitude_max = Float.parseFloat(input_amplitude_max.getText());
+                amplitude_max = Double.parseDouble(input_amplitude_max.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Amplitude Máxima!",
@@ -814,7 +813,7 @@ public class iPump extends javax.swing.JFrame {
         //Amplitude Minima
         if (input_amplitude_min.isEnabled()) {
             if (!input_amplitude_min.getText().isEmpty()) {
-                amplitude_min = Float.parseFloat(input_amplitude_min.getText());
+                amplitude_min = Double.parseDouble(input_amplitude_min.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Amplitude Mínima!",
@@ -828,7 +827,7 @@ public class iPump extends javax.swing.JFrame {
         //Período Máximo
         if (input_periodo_max.isEnabled()) {
             if (!input_periodo_max.getText().isEmpty()) {
-                periodo_max = Float.parseFloat(input_periodo_max.getText());
+                periodo_max = Double.parseDouble(input_periodo_max.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Período Máximo!",
@@ -842,7 +841,7 @@ public class iPump extends javax.swing.JFrame {
         //Período Mínimo
         if (input_periodo_min.isEnabled()) {
             if (!input_periodo_min.getText().isEmpty()) {
-                periodo_min = Float.parseFloat(input_periodo_min.getText());
+                periodo_min = Double.parseDouble(input_periodo_min.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Período Mínimo!",
@@ -856,7 +855,7 @@ public class iPump extends javax.swing.JFrame {
         //Offset
         if (input_offset.isEnabled()) {
             if (!input_offset.getText().isEmpty()) {
-                offset = Float.parseFloat(input_offset.getText());
+                offset = Double.parseDouble(input_offset.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Período Mínimo!",
@@ -870,7 +869,7 @@ public class iPump extends javax.swing.JFrame {
         //Kp
         if (input_kp.isEnabled()) {
             if (!input_kp.getText().isEmpty()) {
-                Kp = Float.parseFloat(input_kp.getText());
+                Kp = Double.parseDouble(input_kp.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Kp!",
@@ -884,7 +883,7 @@ public class iPump extends javax.swing.JFrame {
         //Ki
         if (input_ki.isEnabled()) {
             if (!input_ki.getText().isEmpty()) {
-                Ki = Float.parseFloat(input_ki.getText());
+                Ki = Double.parseDouble(input_ki.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Ki!",
@@ -898,7 +897,7 @@ public class iPump extends javax.swing.JFrame {
         //Kd
         if (input_kd.isEnabled()) {
             if (!input_kd.getText().isEmpty()) {
-                Kd = Float.parseFloat(input_kd.getText());
+                Kd = Double.parseDouble(input_kd.getText());
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Você deve informar um valor de Kd!",
