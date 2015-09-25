@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.swing.JOptionPane;
 
@@ -46,7 +47,7 @@ public class SuperIPump {
 //        String input_ip = JOptionPane.showInputDialog("IP do Middleware:");
         String input_ip = (String) JOptionPane.showInputDialog(null, "IP do Middleware:",
                 "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "localhost");
-        
+
 //        int input_port = Integer.parseInt(JOptionPane.showInputDialog("Port do Middleware:"));
         int input_port = Integer.parseInt(JOptionPane.showInputDialog(null, "Port do Middleware:",
                 "Port do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, 8002).toString());
@@ -56,11 +57,15 @@ public class SuperIPump {
         view.setConnVars(input_ip, input_port);
 
         //---------------------------------------------JSON
-        JsonObject json = Json.createObjectBuilder().add("comando", 0).build();
+        JsonObjectBuilder json = Json.createObjectBuilder();
+        json.add("comando", 0);
+
+        JsonObject json_final = json.build();
+
         StringWriter stWriter = new StringWriter();
 
         try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
-            jsonWriter.writeObject(json);
+            jsonWriter.writeObject(json_final);
         }
 
         String jsonData = stWriter.toString();
@@ -69,6 +74,7 @@ public class SuperIPump {
         Runnable cliente_run = () -> {
             try {
                 while (true) {
+                    System.out.println("ENVIADO : " + jsonData);
                     parseJSON(cliente.sendData(jsonData));
                     view.setDataTQ1(sptq1, mvtq1, pvtq1);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2);
@@ -87,6 +93,8 @@ public class SuperIPump {
 
     private static void parseJSON(String jsonData) {
 
+        System.out.println("RECEBIDO : " + jsonData);
+
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(jsonData);
 
@@ -103,6 +111,7 @@ public class SuperIPump {
             ess = Float.parseFloat(obj.get("ess").toString());
 
         } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no parser do Json!!!");
             Logger.getLogger(SuperIPump.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
