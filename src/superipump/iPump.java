@@ -57,7 +57,7 @@ public class iPump extends javax.swing.JFrame {
     private int Tr = 0;
     private int Mp = 0;
     private int Ts = 0;
-    private int tanque = 1;  // 1 - tq_sup (default) | 2 - tq_inf | 3 - ambos
+    private int tanque = 0;  // 1 - tq_sup (default) | 2 - tq_inf | 3 - ambos
     private String controle;
     private String sinal;
 
@@ -85,13 +85,14 @@ public class iPump extends javax.swing.JFrame {
 
             switch (index) {
                 case 0: // controlar o tanque superior | default
-                    tanque = 1;
+                    tanque = 0;
                     break;
                 case 1: // controlar o tanque inferior
-                    tanque = 2;
+                    tanque = 1;
                     break;
-                case 2: // controlar ambos os tanques
-                    tanque = 3;
+                //case 2: // controlar ambos os tanques
+                   // tanque = 3;
+//                    break;
             }
         });
 
