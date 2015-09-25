@@ -58,7 +58,7 @@ public class iPump extends javax.swing.JFrame {
     private int Mp = 0;
     private int Ts = 0;
     private int tanque = 0;  // 1 - tq_sup (default) | 2 - tq_inf | 3 - ambos
-    private int controle;
+    private String controle;
     private String sinal;
 
     // Variaveis de conexão
@@ -161,37 +161,37 @@ public class iPump extends javax.swing.JFrame {
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = 1;
+                    controle = "P";
                     break;
                 case 2: // tipo PI
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(false);
-                    controle = 2;
+                    controle = "PI";
                     break;
                 case 3: // tipo PD
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(true);
-                    controle = 3;
+                    controle = "PD";
                     break;
                 case 4: // tipo PID
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = 4;
+                    controle = "PID";
                     break;
                 case 5: // tipo PI-D
                     input_kp.setEnabled(true);
                     input_ki.setEnabled(true);
                     input_kd.setEnabled(true);
-                    controle = 5;
+                    controle = "PI-D";
                     break;
                 default: // nenhum tipo escolhido
                     input_kp.setEnabled(false);
                     input_ki.setEnabled(false);
                     input_kd.setEnabled(false);
-                    controle = 0;
+                    controle = "";
                     break;
             }
         });
