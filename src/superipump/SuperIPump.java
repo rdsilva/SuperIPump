@@ -10,6 +10,9 @@ import com.orsoncharts.util.json.JSONObject;
 import com.orsoncharts.util.json.parser.JSONParser;
 import com.orsoncharts.util.json.parser.ParseException;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -44,6 +47,14 @@ public class SuperIPump {
         view.setVisible(true);
         view.setEnabled(true);
 
+        // gerando log no prompt de log
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        String datetime = dateFormat.format(date);
+        String log_start = datetime + "\n - A aplicação cliente foi iniciada!\n\n -------";
+
+        view.setLog(log_start);
+
 //        String input_ip = JOptionPane.showInputDialog("IP do Middleware:");
         String input_ip = (String) JOptionPane.showInputDialog(null, "IP do Middleware:",
                 "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "localhost");
@@ -53,6 +64,17 @@ public class SuperIPump {
                 "Port do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, 8002).toString());
 
         cliente = new ClienteSocket(input_ip, input_port);
+
+        //gerando log no prompt de log
+        date = new Date();
+        datetime = dateFormat.format(date);
+        if (cliente.getStatus()) {
+            log_start = "\n" + datetime + "\n - Conectou ao Middleware!\n" + input_ip + ":" + input_port + "\n\n -------\n";
+            view.setLog(log_start);
+        } else {
+            log_start = "\n" + datetime + "\n - FALHA ao conectar o Middleware!\n\n -------\n";
+            view.setLog(log_start);
+        }
 
         view.setConnVars(input_ip, input_port);
 
@@ -75,7 +97,11 @@ public class SuperIPump {
             try {
                 while (true) {
                     System.out.println("ENVIADO : " + jsonData);
-                    parseJSON(cliente.sendData(jsonData));
+                    String sendData = cliente.sendData(jsonData);
+                    //gerando log no prompt de log
+                    view.setLog("# RECEBIDO \n" + sendData + "\n-----------------\n");
+                    //---------
+                    parseJSON(sendData);
                     view.setDataTQ1(sptq1, mvtq1, pvtq1);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2);
                     view.setDataCalc(tr, tp, ts, mp, ess);
@@ -94,7 +120,7 @@ public class SuperIPump {
     private static void parseJSON(String jsonData) {
 
         System.out.println("RECEBIDO : " + jsonData);
-
+        
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(jsonData);
 

@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 public class ClienteSocket {
 
@@ -20,6 +19,7 @@ public class ClienteSocket {
     private String host = "localhost";
     private int port = 8002;
     private InetAddress address;
+    private boolean status = false;
 
     public ClienteSocket(String host, int port) {
 //    public ClienteSocket() {
@@ -27,6 +27,7 @@ public class ClienteSocket {
         this.port = port;
         try {
             address = InetAddress.getByName(host);
+            this.status = true;
         } catch (UnknownHostException ex) {
             Logger.getLogger(ClienteSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,5 +76,9 @@ public class ClienteSocket {
             }
         }
         return null;
+    }
+    
+    public boolean getStatus(){
+        return this.status;
     }
 }

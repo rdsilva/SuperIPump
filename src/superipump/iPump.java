@@ -10,12 +10,25 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultCaret;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -72,6 +85,11 @@ public class iPump extends javax.swing.JFrame {
     public iPump() {
         initComponents();
 
+        log_pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        DefaultCaret caret = (DefaultCaret) log_area.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
         //Criando o gráfcio do tanque 1
         createChartTQ1();
         //Criando o gráfcio do tanque 2
@@ -91,7 +109,7 @@ public class iPump extends javax.swing.JFrame {
                     tanque = 1;
                     break;
                 //case 2: // controlar ambos os tanques
-                   // tanque = 3;
+                // tanque = 3;
 //                    break;
             }
         });
@@ -102,34 +120,34 @@ public class iPump extends javax.swing.JFrame {
 
             switch (index) {
                 case 1: // sinal degrau
-                    input_amplitude_min.setEnabled(true);
-                    input_amplitude_max.setEnabled(false);
+                    input_amplitude_min.setEnabled(false);
+                    input_amplitude_max.setEnabled(true);
                     input_periodo_min.setEnabled(false);
                     input_periodo_max.setEnabled(false);
                     input_offset.setEnabled(false);
                     sinal = "degrau";
                     break;
                 case 2: // sinal senoidal
-                    input_amplitude_min.setEnabled(true);
-                    input_amplitude_max.setEnabled(false);
-                    input_periodo_min.setEnabled(true);
-                    input_periodo_max.setEnabled(false);
+                    input_amplitude_min.setEnabled(false);
+                    input_amplitude_max.setEnabled(true);
+                    input_periodo_min.setEnabled(false);
+                    input_periodo_max.setEnabled(true);
                     input_offset.setEnabled(true);
                     sinal = "senoidal";
                     break;
                 case 3: // sinal quadrado
-                    input_amplitude_min.setEnabled(true);
-                    input_amplitude_max.setEnabled(false);
-                    input_periodo_min.setEnabled(true);
-                    input_periodo_max.setEnabled(false);
+                    input_amplitude_min.setEnabled(false);
+                    input_amplitude_max.setEnabled(true);
+                    input_periodo_min.setEnabled(false);
+                    input_periodo_max.setEnabled(true);
                     input_offset.setEnabled(true);
                     sinal = "quadrado";
                     break;
                 case 4: // sinal dente de serra
-                    input_amplitude_min.setEnabled(true);
-                    input_amplitude_max.setEnabled(false);
-                    input_periodo_min.setEnabled(true);
-                    input_periodo_max.setEnabled(false);
+                    input_amplitude_min.setEnabled(false);
+                    input_amplitude_max.setEnabled(true);
+                    input_periodo_min.setEnabled(false);
+                    input_periodo_max.setEnabled(true);
                     input_offset.setEnabled(true);
                     sinal = "serra";
                     break;
@@ -270,6 +288,11 @@ public class iPump extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         select_tanque = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
+        log_pane = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        log_area = new javax.swing.JTextArea();
+        btn_limpar_log = new javax.swing.JButton();
+        btn_salvar_log = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("iPump Supervisório - Turma 3 | Grupo 3");
@@ -420,7 +443,7 @@ public class iPump extends javax.swing.JFrame {
         );
         panel_chart_tq1Layout.setVerticalGroup(
             panel_chart_tq1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 161, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         panel_chart_tq2.setBorder(javax.swing.BorderFactory.createTitledBorder("Gráfico - Tanque 2"));
@@ -434,7 +457,7 @@ public class iPump extends javax.swing.JFrame {
         );
         panel_chart_tq2Layout.setVerticalGroup(
             panel_chart_tq2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 161, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         input_periodo_max.setEnabled(false);
@@ -448,6 +471,33 @@ public class iPump extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel3.setText("Qual tanque controlar ?");
 
+        log_pane.setBackground(java.awt.SystemColor.window);
+        log_pane.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Log :"));
+
+        log_area.setColumns(20);
+        log_area.setLineWrap(true);
+        log_area.setRows(5);
+        log_area.setWrapStyleWord(true);
+        log_area.setEnabled(false);
+        jScrollPane1.setViewportView(log_area);
+
+        log_pane.setViewportView(jScrollPane1);
+
+        btn_limpar_log.setText("Limpar Log");
+        btn_limpar_log.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_limpar_logActionPerformed(evt);
+            }
+        });
+
+        btn_salvar_log.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btn_salvar_log.setText("Salvar Log");
+        btn_salvar_log.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_salvar_logActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -457,15 +507,16 @@ public class iPump extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_emergencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pbar_tq1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(5, 5, 5))
                             .addComponent(lbl_nivel_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(btn_malha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_windup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -485,13 +536,13 @@ public class iPump extends javax.swing.JFrame {
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(input_offset, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                                    .addComponent(input_periodo_min)
+                                    .addComponent(input_periodo_min, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                                     .addComponent(input_amplitude_min))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(input_amplitude_max, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                                    .addComponent(input_periodo_max)))
+                                    .addComponent(input_periodo_max)
+                                    .addComponent(input_offset, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(select_sinal, 0, 209, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,18 +593,54 @@ public class iPump extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(input_tp)
                             .addComponent(input_ess, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(panel_chart_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
-                    .addComponent(panel_chart_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(panel_chart_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE)
+                    .addComponent(panel_chart_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_limpar_log, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_salvar_log, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                .addGap(7, 7, 7))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1065, 1065, 1065)
+                .addComponent(log_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panel_chart_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pbar_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panel_chart_tq2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_nivel_tq2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(select_tanque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_malha, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_windup, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_enviar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel_chart_tq1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panel_chart_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(select_controle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -627,32 +714,12 @@ public class iPump extends javax.swing.JFrame {
                             .addGap(12, 12, 12))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pbar_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_nivel_tq2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addContainerGap()
+                .addComponent(log_pane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(select_tanque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_malha, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_windup, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_enviar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(btn_limpar_log)
+                    .addComponent(btn_salvar_log))
                 .addGap(7, 7, 7))
         );
 
@@ -706,6 +773,11 @@ public class iPump extends javax.swing.JFrame {
                 }
 
                 String jsonData = stWriter.toString();
+
+                //gerando log no prompt de log
+                setLog("$ ENVIADO \n" + jsonData + "\n-----------------\n");
+                //---------
+
                 String sendData = cliente.sendData(jsonData);
                 System.out.println(sendData);
                 //---------------------------------------------
@@ -760,6 +832,11 @@ public class iPump extends javax.swing.JFrame {
                     }
 
                     String jsonData = stWriter.toString();
+
+                    //gerando log no prompt de log
+                    setLog("$ ENVIADO \n" + jsonData + "\n-----------------\n");
+                    //---------
+
                     String sendData = cliente.sendData(jsonData);
                     System.out.println(sendData);
                     //---------------------------------------------
@@ -795,6 +872,57 @@ public class iPump extends javax.swing.JFrame {
 
         malha_aberta = !btn_malha.isSelected();
     }//GEN-LAST:event_btn_malhaActionPerformed
+
+    private void btn_limpar_logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limpar_logActionPerformed
+        log_area.setText("");
+    }//GEN-LAST:event_btn_limpar_logActionPerformed
+
+    private void btn_salvar_logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvar_logActionPerformed
+
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Arquivos de texto", "txt");
+        chooser.setFileFilter(filter);
+        chooser.setDialogTitle("Salvar Arquivo de Log");
+
+        int userSelection = chooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = chooser.getSelectedFile();
+            System.out.println("Salvar Arquivo Como: " + fileToSave.getAbsolutePath());
+
+            try {
+
+                String content = log_area.getText();
+
+//                File file = new File("/users/mkyong/filename.txt");
+                // if file doesnt exists, then create it
+                if (!fileToSave.exists()) {
+                    fileToSave.createNewFile();
+                }
+
+                FileWriter fw = new FileWriter(fileToSave.getAbsoluteFile() + ".txt");
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(content);
+                bw.close();
+
+                // gerando log no prompt de log
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date date = new Date();
+                String datetime = dateFormat.format(date);
+                String log = datetime + "\n\n\n ------ > LOG SALVO : " + fileToSave.getAbsoluteFile() + ".txt < ------ \n\n\n";
+
+                setLog(log);
+
+//                System.out.println("Salvo");
+
+            } catch (IOException e) {
+            }
+
+        }
+
+
+    }//GEN-LAST:event_btn_salvar_logActionPerformed
 
     private void readVars() {
         //Amplitude Maxima
@@ -1037,6 +1165,11 @@ public class iPump extends javax.swing.JFrame {
 
     }
 
+    public void setLog(String text) {
+        log_area.append(text);
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1053,15 +1186,11 @@ public class iPump extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(iPump.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(iPump.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(iPump.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(iPump.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -1075,7 +1204,9 @@ public class iPump extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_emergencia;
     private javax.swing.JButton btn_enviar;
+    private javax.swing.JButton btn_limpar_log;
     private javax.swing.JToggleButton btn_malha;
+    private javax.swing.JButton btn_salvar_log;
     private javax.swing.JToggleButton btn_windup;
     private javax.swing.JTextField input_amplitude_max;
     private javax.swing.JTextField input_amplitude_min;
@@ -1107,10 +1238,13 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lbl_nivel_tq1;
     private javax.swing.JLabel lbl_nivel_tq2;
+    private javax.swing.JTextArea log_area;
+    private javax.swing.JScrollPane log_pane;
     private javax.swing.JPanel panel_chart_tq1;
     private javax.swing.JPanel panel_chart_tq2;
     private javax.swing.JProgressBar pbar_tq1;
