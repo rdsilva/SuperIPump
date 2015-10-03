@@ -38,12 +38,13 @@ public class SuperIPump {
     private static float ts;
     private static float mp;
     private static float ess;
-
+    private static iPump view;
+    
     private static ClienteSocket cliente;//  = new ClienteSocket();
 
     public static void main(String[] args) {
 
-        iPump view = new iPump();
+        view = new iPump();
         view.setVisible(true);
         view.setEnabled(true);
 
@@ -137,6 +138,9 @@ public class SuperIPump {
             ess = Float.parseFloat(obj.get("ess").toString());
 
         } catch (ParseException ex) {
+            
+            view.setLog("\n\nERRO NO FORMATO DO JSON RECEBIDO\n\n");
+            
             JOptionPane.showMessageDialog(null, "Erro no parser do Json!!!");
             Logger.getLogger(SuperIPump.class
                     .getName()).log(Level.SEVERE, null, ex);
