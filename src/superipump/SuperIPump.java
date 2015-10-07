@@ -39,7 +39,7 @@ public class SuperIPump {
     private static float mp;
     private static float ess;
     private static iPump view;
-    
+
     private static ClienteSocket cliente;//  = new ClienteSocket();
 
     public static void main(String[] args) {
@@ -121,29 +121,34 @@ public class SuperIPump {
     private static void parseJSON(String jsonData) {
 
         System.out.println("RECEBIDO : " + jsonData);
-        
-        try {
-            JSONObject obj = (JSONObject) new JSONParser().parse(jsonData);
 
-            sptq1 = Float.parseFloat(obj.get("sptq_1").toString());
-            sptq2 = Float.parseFloat(obj.get("sptq_2").toString());
-            mvtq1 = Float.parseFloat(obj.get("mvtq_1").toString());
-            mvtq2 = Float.parseFloat(obj.get("mvtq_2").toString());
-            pvtq1 = Float.parseFloat(obj.get("pvtq_1").toString());
-            pvtq2 = Float.parseFloat(obj.get("pvtq_2").toString());
-            tp = Float.parseFloat(obj.get("tp").toString());
-            tr = Float.parseFloat(obj.get("tr").toString());
-            ts = Float.parseFloat(obj.get("ts").toString());
-            mp = Float.parseFloat(obj.get("mp").toString());
-            ess = Float.parseFloat(obj.get("ess").toString());
+        if (!jsonData.contains("ack")) {
+            try {
+                JSONObject obj = (JSONObject) new JSONParser().parse(jsonData);
 
-        } catch (ParseException ex) {
-            
-            view.setLog("\n\nERRO NO FORMATO DO JSON RECEBIDO\n\n");
-            
-            JOptionPane.showMessageDialog(null, "Erro no parser do Json!!!");
-            Logger.getLogger(SuperIPump.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                sptq1 = Float.parseFloat(obj.get("sptq_1").toString());
+                sptq2 = Float.parseFloat(obj.get("sptq_2").toString());
+                mvtq1 = Float.parseFloat(obj.get("mvtq_1").toString());
+                mvtq2 = Float.parseFloat(obj.get("mvtq_2").toString());
+                pvtq1 = Float.parseFloat(obj.get("pvtq_1").toString());
+                pvtq2 = Float.parseFloat(obj.get("pvtq_2").toString());
+                tp = Float.parseFloat(obj.get("tp").toString());
+                tr = Float.parseFloat(obj.get("tr").toString());
+                ts = Float.parseFloat(obj.get("ts").toString());
+                mp = Float.parseFloat(obj.get("mp").toString());
+                ess = Float.parseFloat(obj.get("ess").toString());
+
+            } catch (ParseException ex) {
+
+                view.setLog("\n\nERRO NO FORMATO DO JSON RECEBIDO\n\n");
+
+                JOptionPane.showMessageDialog(null, "Erro no parser do Json!!!");
+                Logger.getLogger(SuperIPump.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            view.setLog("\n\nConexão Teste Funcionou!!!\n\n");
         }
+
     }
 }

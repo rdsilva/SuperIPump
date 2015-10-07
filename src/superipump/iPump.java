@@ -5,8 +5,7 @@
  */
 package superipump;
 
-import Aux.ExternalChart;
-import Aux.SobreIPump;
+import Aux.*;
 import Testes.ClienteSocket;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -14,12 +13,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +26,6 @@ import javax.json.JsonWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 import org.jfree.chart.ChartFactory;
@@ -824,16 +819,36 @@ public class iPump extends javax.swing.JFrame {
         jMenu1.setText("Supervisório");
 
         menu_conectar.setText("Conectar Servidor");
+        menu_conectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_conectarActionPerformed(evt);
+            }
+        });
         jMenu1.add(menu_conectar);
 
         menu_desconectar.setText("Desconectar Servidor");
+        menu_desconectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_desconectarActionPerformed(evt);
+            }
+        });
         jMenu1.add(menu_desconectar);
         jMenu1.add(jSeparator4);
 
         menu_salvar_log.setText("Salvar Log");
+        menu_salvar_log.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_salvar_logActionPerformed(evt);
+            }
+        });
         jMenu1.add(menu_salvar_log);
 
         menu_limpar_log.setText("Limpar Log");
+        menu_limpar_log.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_limpar_logActionPerformed(evt);
+            }
+        });
         jMenu1.add(menu_limpar_log);
         jMenu1.add(jSeparator5);
 
@@ -870,9 +885,19 @@ public class iPump extends javax.swing.JFrame {
         jMenu2.add(menu_sobre_ipump);
 
         menu_sobre_grupo.setText("Grupo de Desenvolvimento");
+        menu_sobre_grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_sobre_grupoActionPerformed(evt);
+            }
+        });
         jMenu2.add(menu_sobre_grupo);
 
         menu_sobre_protocolo.setText("Protocolo de Comunicação");
+        menu_sobre_protocolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_sobre_protocoloActionPerformed(evt);
+            }
+        });
         jMenu2.add(menu_sobre_protocolo);
 
         jMenuBar1.add(jMenu2);
@@ -1231,6 +1256,32 @@ public class iPump extends javax.swing.JFrame {
         SobreIPump about = new SobreIPump();
         about.setVisible(true);
     }//GEN-LAST:event_menu_sobre_ipumpActionPerformed
+
+    private void menu_sobre_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_sobre_grupoActionPerformed
+        SobreEquipe equipe = new SobreEquipe();
+        equipe.setVisible(true);
+    }//GEN-LAST:event_menu_sobre_grupoActionPerformed
+
+    private void menu_sobre_protocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_sobre_protocoloActionPerformed
+        SobreProtocolo protocolo = new SobreProtocolo();
+        protocolo.setVisible(true);
+    }//GEN-LAST:event_menu_sobre_protocoloActionPerformed
+
+    private void menu_salvar_logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_salvar_logActionPerformed
+        btn_salvar_logActionPerformed(evt);
+    }//GEN-LAST:event_menu_salvar_logActionPerformed
+
+    private void menu_limpar_logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_limpar_logActionPerformed
+        btn_limpar_logActionPerformed(evt);
+    }//GEN-LAST:event_menu_limpar_logActionPerformed
+
+    private void menu_desconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_desconectarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu_desconectarActionPerformed
+
+    private void menu_conectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_conectarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu_conectarActionPerformed
 
     private void readVars() {
         //Amplitude Maxima

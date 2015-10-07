@@ -43,6 +43,7 @@ public class ExternalChart extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gráfico - Tanque XX");
+        setAlwaysOnTop(true);
 
         panel_chart.setBorder(javax.swing.BorderFactory.createTitledBorder("Tanque XX"));
 
