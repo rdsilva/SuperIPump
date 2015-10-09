@@ -58,7 +58,8 @@ public class SuperIPump {
 
 //        String input_ip = JOptionPane.showInputDialog("IP do Middleware:");
         String input_ip = (String) JOptionPane.showInputDialog(null, "IP do Middleware:",
-                "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "localhost");
+                "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "10.13.100.83");
+//                "IP do Middleware", JOptionPane.QUESTION_MESSAGE, null, null, "localhost");
 
 //        int input_port = Integer.parseInt(JOptionPane.showInputDialog("Port do Middleware:"));
         int input_port = Integer.parseInt(JOptionPane.showInputDialog(null, "Port do Middleware:",
@@ -106,7 +107,7 @@ public class SuperIPump {
                     view.setDataTQ1(sptq1, mvtq1, pvtq1);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2);
                     view.setDataCalc(tr, tp, ts, mp, ess);
-                    Thread.sleep(1000L);
+                    Thread.sleep(500L);
                 }
             } catch (InterruptedException iex) {
             }
