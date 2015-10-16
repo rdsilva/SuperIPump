@@ -7,7 +7,6 @@ package superipump;
 
 import Aux.*;
 import Testes.ClienteSocket;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -31,9 +30,11 @@ import javax.swing.text.DefaultCaret;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -52,8 +53,16 @@ public class iPump extends javax.swing.JFrame {
     private final TimeSeries sp_tq_02 = new TimeSeries("SP");
     private final TimeSeries pv_tq_01 = new TimeSeries("PV");
     private final TimeSeries pv_tq_02 = new TimeSeries("PV");
+    private final TimeSeries kp_tq_01 = new TimeSeries("Kp");
+    private final TimeSeries ki_tq_01 = new TimeSeries("Ki");
+    private final TimeSeries kd_tq_01 = new TimeSeries("Kd");
+    private final TimeSeries kp_tq_02 = new TimeSeries("Kp");
+    private final TimeSeries ki_tq_02 = new TimeSeries("Ki");
+    private final TimeSeries kd_tq_02 = new TimeSeries("Kd");
     private JFreeChart chart_tq1;
     private JFreeChart chart_tq2;
+    private JFreeChart chart_calculados_tq1;
+    private JFreeChart chart_calculados_tq2;
 
     // Variaveis de controle da planta
     private boolean malha_aberta = true;
@@ -94,10 +103,12 @@ public class iPump extends javax.swing.JFrame {
         DefaultCaret caret = (DefaultCaret) log_area.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        //Criando o gráfcio do tanque 1
+        //Criando o gráfcio referentes ao tanque 1
         createChartTQ1();
-        //Criando o gráfcio do tanque 2
+        createChartCalculadosTQ1();
+        //Criando o gráfcio referentes ao tanque 2
         createChartTQ2();
+        createChartCalculadosTQ2();
 
         revalidate();
 
@@ -378,6 +389,8 @@ public class iPump extends javax.swing.JFrame {
         menu_graficos = new javax.swing.JMenu();
         menu_grafico_externo_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_tq2 = new javax.swing.JMenuItem();
+        menu_grafico_externo_calc_tq1 = new javax.swing.JMenuItem();
+        menu_grafico_externo_calc_tq2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menu_sobre_ipump = new javax.swing.JMenuItem();
         menu_sobre_grupo = new javax.swing.JMenuItem();
@@ -480,7 +493,6 @@ public class iPump extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel3.setText("Qual tanque controlar ?");
 
-        log_pane.setBackground(java.awt.SystemColor.window);
         log_pane.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Log :"));
 
         log_area.setColumns(20);
@@ -897,6 +909,22 @@ public class iPump extends javax.swing.JFrame {
             }
         });
         menu_graficos.add(menu_grafico_externo_tq2);
+
+        menu_grafico_externo_calc_tq1.setText("Calculado - Controlador 1");
+        menu_grafico_externo_calc_tq1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_grafico_externo_calc_tq1ActionPerformed(evt);
+            }
+        });
+        menu_graficos.add(menu_grafico_externo_calc_tq1);
+
+        menu_grafico_externo_calc_tq2.setText("Calculado - Controlador 2");
+        menu_grafico_externo_calc_tq2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_grafico_externo_calc_tq2ActionPerformed(evt);
+            }
+        });
+        menu_graficos.add(menu_grafico_externo_calc_tq2);
 
         jMenu1.add(menu_graficos);
 
@@ -1323,6 +1351,22 @@ public class iPump extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menu_conectarActionPerformed
 
+    private void menu_grafico_externo_calc_tq1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_calc_tq1ActionPerformed
+        ExternalChart ext_chart = new ExternalChart();
+        ext_chart.setChart(kp_tq_01, ki_tq_01, kd_tq_01);
+        ext_chart.setBorderTitle("Calculado - Controlador 01");
+        ext_chart.setTitle("Gráfico - Calculado - Controlador 01");
+        ext_chart.setVisible(true);
+    }//GEN-LAST:event_menu_grafico_externo_calc_tq1ActionPerformed
+
+    private void menu_grafico_externo_calc_tq2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_calc_tq2ActionPerformed
+        ExternalChart ext_chart = new ExternalChart();
+        ext_chart.setChart(kp_tq_02, ki_tq_02, kd_tq_02);
+        ext_chart.setBorderTitle("Calculado - Controlador 02");
+        ext_chart.setTitle("Gráfico - Calculado - Controlador 02");
+        ext_chart.setVisible(true);
+    }//GEN-LAST:event_menu_grafico_externo_calc_tq2ActionPerformed
+
     private void readVars() {
         //Amplitude Maxima
         if (input_amplitude_max.isEnabled()) {
@@ -1516,6 +1560,18 @@ public class iPump extends javax.swing.JFrame {
         panel_chart_tq1.validate();
     }
 
+    private void createChartCalculadosTQ1() {
+        final XYDataset dataset = createDatasetCalculadosTQ1();
+        final JFreeChart chart = createChartTQ(dataset);
+        final ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(95, 25));
+        chartPanel.setMouseZoomable(true, false);
+
+        panel_chart_tq3.setLayout(new java.awt.BorderLayout());
+        panel_chart_tq3.add(chartPanel, BorderLayout.CENTER);
+        panel_chart_tq3.validate();
+    }
+
     private void createChartTQ2() {
         final XYDataset dataset = createDatasetTQ2();
         final JFreeChart chart = createChartTQ(dataset);
@@ -1527,6 +1583,17 @@ public class iPump extends javax.swing.JFrame {
         panel_chart_tq2.validate();
     }
 
+    private void createChartCalculadosTQ2() {
+        final XYDataset dataset = createDatasetCalculadosTQ2();
+        final JFreeChart chart = createChartTQ(dataset);
+        final ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(95, 25));
+        chartPanel.setMouseZoomable(true, false);
+        panel_chart_tq4.setLayout(new java.awt.BorderLayout());
+        panel_chart_tq4.add(chartPanel, BorderLayout.CENTER);
+        panel_chart_tq4.validate();
+    }
+
     private XYDataset createDatasetTQ1() {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
@@ -1534,12 +1601,23 @@ public class iPump extends javax.swing.JFrame {
         sp_tq_01.add(new Millisecond(), 0.0);
         pv_tq_01.add(new Millisecond(), 0.0);
 
-//        mv_tq_01.setS
-        
-        
         dataset.addSeries(mv_tq_01);
         dataset.addSeries(sp_tq_01);
         dataset.addSeries(pv_tq_01);
+
+        return dataset;
+    }
+
+    private XYDataset createDatasetCalculadosTQ1() {
+        final TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+        kp_tq_01.add(new Millisecond(), 0.0);
+        kd_tq_01.add(new Millisecond(), 0.0);
+        ki_tq_01.add(new Millisecond(), 0.0);
+
+        dataset.addSeries(kp_tq_01);
+        dataset.addSeries(ki_tq_01);
+        dataset.addSeries(kd_tq_01);
 
         return dataset;
     }
@@ -1554,6 +1632,20 @@ public class iPump extends javax.swing.JFrame {
         dataset.addSeries(mv_tq_02);
         dataset.addSeries(sp_tq_02);
         dataset.addSeries(pv_tq_02);
+
+        return dataset;
+    }
+
+    private XYDataset createDatasetCalculadosTQ2() {
+        final TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+        kp_tq_02.add(new Millisecond(), 0.0);
+        kd_tq_02.add(new Millisecond(), 0.0);
+        ki_tq_02.add(new Millisecond(), 0.0);
+
+        dataset.addSeries(kp_tq_02);
+        dataset.addSeries(ki_tq_02);
+        dataset.addSeries(kd_tq_02);
 
         return dataset;
     }
@@ -1579,19 +1671,20 @@ public class iPump extends javax.swing.JFrame {
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(false);
 
-        XYItemRenderer renderer = plot.getRenderer();
+        XYItemRenderer r = plot.getRenderer();
         
-//        if (renderer instanceof StandardXYItemRenderer) {
-//            System.out.println("entrou carai");
-//            StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
-//            rr.setSeriesOutlinePaint(0, Color.RED);
-//            rr.setSeriesOutlinePaint(1, Color.BLUE);
-//            rr.setSeriesOutlinePaint(2, Color.black);
-//            
-//            rr.setSeriesOutlineStroke(0, new BasicStroke(5.0f));
-//            rr.setSeriesOutlineStroke(1, new BasicStroke(5.0f));
-//            rr.setSeriesOutlineStroke(2, new BasicStroke(5.0f));
-//        }
+        if (r instanceof XYLineAndShapeRenderer) {
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+
+            renderer.setSeriesPaint(0, Color.RED);
+            renderer.setSeriesPaint(1, Color.BLUE);
+            renderer.setSeriesPaint(2, Color.black);
+            
+        }
+        
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("k:m:s"));
+
         return chart;
 
     }
@@ -1698,6 +1791,8 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JScrollPane log_pane;
     private javax.swing.JMenuItem menu_conectar;
     private javax.swing.JMenuItem menu_desconectar;
+    private javax.swing.JMenuItem menu_grafico_externo_calc_tq1;
+    private javax.swing.JMenuItem menu_grafico_externo_calc_tq2;
     private javax.swing.JMenuItem menu_grafico_externo_tq1;
     private javax.swing.JMenuItem menu_grafico_externo_tq2;
     private javax.swing.JMenu menu_graficos;
