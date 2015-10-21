@@ -1680,6 +1680,9 @@ public class iPump extends javax.swing.JFrame {
             renderer.setSeriesPaint(1, Color.BLUE);
             renderer.setSeriesPaint(2, Color.black);
             
+            renderer.setSeriesVisibleInLegend(0, true);
+            renderer.setSeriesVisibleInLegend(1, true);
+            renderer.setSeriesVisibleInLegend(2, true);
         }
         
         DateAxis axis = (DateAxis) plot.getDomainAxis();
