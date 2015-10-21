@@ -38,6 +38,12 @@ public class SuperIPump {
     private static float ts;
     private static float mp;
     private static float ess;
+    private static float p_master;
+    private static float i_master;
+    private static float d_master;
+    private static float p_slave;
+    private static float i_slave;
+    private static float d_slave;
     private static iPump view;
 
     private static ClienteSocket cliente;//  = new ClienteSocket();
@@ -104,8 +110,8 @@ public class SuperIPump {
                     view.setLog("# RECEBIDO \n" + sendData + "\n-----------------\n");
                     //---------
                     parseJSON(sendData);
-                    view.setDataTQ1(sptq1, mvtq1, pvtq1);
-                    view.setDataTQ2(sptq2, mvtq2, pvtq2);
+                    view.setDataTQ1(sptq1, mvtq1, pvtq1, p_master, i_master, d_master);
+                    view.setDataTQ2(sptq2, mvtq2, pvtq2, p_slave, i_master, d_master);
                     view.setDataCalc(tr, tp, ts, mp, ess);
                     Thread.sleep(500L);
                 }
@@ -169,6 +175,30 @@ public class SuperIPump {
 
                 if (jsonData.contains("ess")) {
                     ess = Float.parseFloat(obj.get("ess").toString());
+                }
+                
+                if (jsonData.contains("P_master")) {
+                    p_master = Float.parseFloat(obj.get("P_master").toString());
+                }
+                
+                if (jsonData.contains("I_master")) {
+                    i_master = Float.parseFloat(obj.get("I_master").toString());
+                }
+                
+                if (jsonData.contains("D_master")) {
+                    d_master = Float.parseFloat(obj.get("D_master").toString());
+                }
+                
+                if (jsonData.contains("P_slave")) {
+                    p_slave = Float.parseFloat(obj.get("P_slave").toString());
+                }
+                
+                if (jsonData.contains("I_slave")) {
+                    i_slave = Float.parseFloat(obj.get("I_slave").toString());
+                }
+                
+                if (jsonData.contains("D_slave")) {
+                    d_slave = Float.parseFloat(obj.get("D_slave").toString());
                 }
 
             } catch (ParseException ex) {

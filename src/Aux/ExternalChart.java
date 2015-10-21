@@ -5,7 +5,6 @@
  */
 package Aux;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
@@ -15,7 +14,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.TimeSeries;
@@ -105,7 +103,7 @@ public class ExternalChart extends javax.swing.JFrame {
                 " ",
                 " ",
                 dataset,
-                true,
+                false,
                 true,
                 false
         );
@@ -127,15 +125,15 @@ public class ExternalChart extends javax.swing.JFrame {
             renderer.setSeriesPaint(0, Color.RED);
             renderer.setSeriesPaint(1, Color.BLUE);
             renderer.setSeriesPaint(2, Color.black);
-            
-            renderer.setSeriesVisibleInLegend(0, true);
-            renderer.setSeriesVisibleInLegend(1, true);
-            renderer.setSeriesVisibleInLegend(2, true);
 
+            renderer.setSeriesVisibleInLegend(0, true, true);
+            renderer.setSeriesVisibleInLegend(1, true, true);
+            renderer.setSeriesVisibleInLegend(2, true, true);
+           
         }
-
+        
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("k:m:s"));
+        axis.setDateFormatOverride(new SimpleDateFormat("k:mm:s"));
 
         return chart;
 

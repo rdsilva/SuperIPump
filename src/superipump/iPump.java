@@ -53,12 +53,12 @@ public class iPump extends javax.swing.JFrame {
     private final TimeSeries sp_tq_02 = new TimeSeries("SP");
     private final TimeSeries pv_tq_01 = new TimeSeries("PV");
     private final TimeSeries pv_tq_02 = new TimeSeries("PV");
-    private final TimeSeries kp_tq_01 = new TimeSeries("P");
-    private final TimeSeries ki_tq_01 = new TimeSeries("I");
-    private final TimeSeries kd_tq_01 = new TimeSeries("D");
-    private final TimeSeries kp_tq_02 = new TimeSeries("P");
-    private final TimeSeries ki_tq_02 = new TimeSeries("I");
-    private final TimeSeries kd_tq_02 = new TimeSeries("D");
+    private final TimeSeries p_tq_01 = new TimeSeries("P");
+    private final TimeSeries i_tq_01 = new TimeSeries("I");
+    private final TimeSeries d_tq_01 = new TimeSeries("D");
+    private final TimeSeries p_tq_02 = new TimeSeries("P");
+    private final TimeSeries i_tq_02 = new TimeSeries("I");
+    private final TimeSeries d_tq_02 = new TimeSeries("D");
     private JFreeChart chart_tq1;
     private JFreeChart chart_tq2;
     private JFreeChart chart_calculados_tq1;
@@ -411,6 +411,7 @@ public class iPump extends javax.swing.JFrame {
         pbar_tq1.setToolTipText("Nível do Tanque Superior");
         pbar_tq1.setValue(23);
         pbar_tq1.setPreferredSize(new java.awt.Dimension(60, 145));
+        pbar_tq1.setSize(new java.awt.Dimension(60, 145));
         pbar_tq1.setStringPainted(true);
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -421,6 +422,7 @@ public class iPump extends javax.swing.JFrame {
         pbar_tq2.setToolTipText("Nível do Tanque Inferior");
         pbar_tq2.setValue(15);
         pbar_tq2.setPreferredSize(new java.awt.Dimension(60, 145));
+        pbar_tq2.setSize(new java.awt.Dimension(60, 145));
         pbar_tq2.setStringPainted(true);
 
         lbl_nivel_tq1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -974,9 +976,9 @@ public class iPump extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(pbar_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pbar_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35)
-                                .addComponent(pbar_tq2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(pbar_tq2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lbl_nivel_tq1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35)
@@ -1353,7 +1355,7 @@ public class iPump extends javax.swing.JFrame {
 
     private void menu_grafico_externo_calc_tq1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_calc_tq1ActionPerformed
         ExternalChart ext_chart = new ExternalChart();
-        ext_chart.setChart(kp_tq_01, ki_tq_01, kd_tq_01);
+        ext_chart.setChart(p_tq_01, i_tq_01, d_tq_01);
         ext_chart.setBorderTitle("Calculado - Controlador 01");
         ext_chart.setTitle("Gráfico - Calculado - Controlador 01");
         ext_chart.setVisible(true);
@@ -1361,7 +1363,7 @@ public class iPump extends javax.swing.JFrame {
 
     private void menu_grafico_externo_calc_tq2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_calc_tq2ActionPerformed
         ExternalChart ext_chart = new ExternalChart();
-        ext_chart.setChart(kp_tq_02, ki_tq_02, kd_tq_02);
+        ext_chart.setChart(p_tq_02, i_tq_02, d_tq_02);
         ext_chart.setBorderTitle("Calculado - Controlador 02");
         ext_chart.setTitle("Gráfico - Calculado - Controlador 02");
         ext_chart.setVisible(true);
@@ -1521,23 +1523,37 @@ public class iPump extends javax.swing.JFrame {
 
     }
 
-    public void setDataTQ1(float sp, float mv, float pv) {
+    // SET DATAS
+    
+    public void setDataTQ1(float sp, float mv, float pv, float p, float i, float d) {
         pbar_tq1.setValue((int) pv);
         lbl_nivel_tq1.setText("<html><b>" + String.format("%.2f", pv) + "</b> cm</html>");
 
+        // TANQUE
         mv_tq_01.addOrUpdate(new Millisecond(), mv);
         sp_tq_01.addOrUpdate(new Millisecond(), sp);
         pv_tq_01.addOrUpdate(new Millisecond(), pv);
+        
+        // VARIAVEIS CALCULADAS
+        p_tq_01.addOrUpdate(new Millisecond(), p);
+        i_tq_01.addOrUpdate(new Millisecond(), i);
+        d_tq_01.addOrUpdate(new Millisecond(), d);
 
     }
 
-    public void setDataTQ2(float sp, float mv, float pv) {
+    public void setDataTQ2(float sp, float mv, float pv, float p, float i, float d) {
         pbar_tq2.setValue((int) pv);
         lbl_nivel_tq2.setText("<html><b>" + String.format("%.2f", pv) + "</b> cm</html>");
 
+        // TANQUE
         mv_tq_02.addOrUpdate(new Millisecond(), mv);
         sp_tq_02.addOrUpdate(new Millisecond(), sp);
         pv_tq_02.addOrUpdate(new Millisecond(), pv);
+        
+        // VARIAVEIS CALCULADAS
+        p_tq_02.addOrUpdate(new Millisecond(), p);
+        i_tq_02.addOrUpdate(new Millisecond(), i);
+        d_tq_02.addOrUpdate(new Millisecond(), d);
 
     }
 
@@ -1549,6 +1565,8 @@ public class iPump extends javax.swing.JFrame {
         lbl_ess.setText("<html>Ess : <b style=\"color:red\">" + String.format("%.2f", ess) + "</b></html>");
     }
 
+    // GRÁFICOS
+    
     private void createChartTQ1() {
         final XYDataset dataset = createDatasetTQ1();
         final JFreeChart chart = createChartTQ(dataset);
@@ -1594,6 +1612,8 @@ public class iPump extends javax.swing.JFrame {
         panel_chart_tq4.validate();
     }
 
+    // SERIES
+    
     private XYDataset createDatasetTQ1() {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
@@ -1611,13 +1631,13 @@ public class iPump extends javax.swing.JFrame {
     private XYDataset createDatasetCalculadosTQ1() {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-        kp_tq_01.add(new Millisecond(), 0.0);
-        kd_tq_01.add(new Millisecond(), 0.0);
-        ki_tq_01.add(new Millisecond(), 0.0);
+        p_tq_01.add(new Millisecond(), 0.0);
+        d_tq_01.add(new Millisecond(), 0.0);
+        i_tq_01.add(new Millisecond(), 0.0);
 
-        dataset.addSeries(kp_tq_01);
-        dataset.addSeries(ki_tq_01);
-        dataset.addSeries(kd_tq_01);
+        dataset.addSeries(p_tq_01);
+        dataset.addSeries(i_tq_01);
+        dataset.addSeries(d_tq_01);
 
         return dataset;
     }
@@ -1639,17 +1659,19 @@ public class iPump extends javax.swing.JFrame {
     private XYDataset createDatasetCalculadosTQ2() {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-        kp_tq_02.add(new Millisecond(), 0.0);
-        kd_tq_02.add(new Millisecond(), 0.0);
-        ki_tq_02.add(new Millisecond(), 0.0);
+        p_tq_02.add(new Millisecond(), 0.0);
+        d_tq_02.add(new Millisecond(), 0.0);
+        i_tq_02.add(new Millisecond(), 0.0);
 
-        dataset.addSeries(kp_tq_02);
-        dataset.addSeries(ki_tq_02);
-        dataset.addSeries(kd_tq_02);
+        dataset.addSeries(p_tq_02);
+        dataset.addSeries(i_tq_02);
+        dataset.addSeries(d_tq_02);
 
         return dataset;
     }
 
+    //GRÁFICO GENERICO
+    
     private JFreeChart createChartTQ(final XYDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createTimeSeriesChart(
@@ -1680,13 +1702,13 @@ public class iPump extends javax.swing.JFrame {
             renderer.setSeriesPaint(1, Color.BLUE);
             renderer.setSeriesPaint(2, Color.black);
             
-            renderer.setSeriesVisibleInLegend(0, true);
-            renderer.setSeriesVisibleInLegend(1, true);
-            renderer.setSeriesVisibleInLegend(2, true);
+            renderer.setSeriesVisibleInLegend(0, true, true);
+            renderer.setSeriesVisibleInLegend(1, true, true);
+            renderer.setSeriesVisibleInLegend(2, true, true);
         }
         
         DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("k:m:s"));
+        axis.setDateFormatOverride(new SimpleDateFormat("k:mm:s"));
 
         return chart;
 

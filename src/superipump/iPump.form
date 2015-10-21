@@ -175,9 +175,9 @@
                               <Component id="jLabel2" min="-2" pref="66" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="pbar_tq1" min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="pbar_tq1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="35" pref="35" max="-2" attributes="0"/>
-                              <Component id="pbar_tq2" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="pbar_tq2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="lbl_nivel_tq1" min="-2" pref="65" max="-2" attributes="0"/>
@@ -335,6 +335,9 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[60, 145]"/>
         </Property>
+        <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[60, 145]"/>
+        </Property>
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
@@ -353,6 +356,9 @@
         <Property name="toolTipText" type="java.lang.String" value="N&#xed;vel do Tanque Inferior"/>
         <Property name="value" type="int" value="15"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[60, 145]"/>
+        </Property>
+        <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[60, 145]"/>
         </Property>
         <Property name="stringPainted" type="boolean" value="true"/>
