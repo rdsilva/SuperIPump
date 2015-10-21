@@ -53,12 +53,12 @@ public class iPump extends javax.swing.JFrame {
     private final TimeSeries sp_tq_02 = new TimeSeries("SP");
     private final TimeSeries pv_tq_01 = new TimeSeries("PV");
     private final TimeSeries pv_tq_02 = new TimeSeries("PV");
-    private final TimeSeries kp_tq_01 = new TimeSeries("Kp");
-    private final TimeSeries ki_tq_01 = new TimeSeries("Ki");
-    private final TimeSeries kd_tq_01 = new TimeSeries("Kd");
-    private final TimeSeries kp_tq_02 = new TimeSeries("Kp");
-    private final TimeSeries ki_tq_02 = new TimeSeries("Ki");
-    private final TimeSeries kd_tq_02 = new TimeSeries("Kd");
+    private final TimeSeries kp_tq_01 = new TimeSeries("P");
+    private final TimeSeries ki_tq_01 = new TimeSeries("I");
+    private final TimeSeries kd_tq_01 = new TimeSeries("D");
+    private final TimeSeries kp_tq_02 = new TimeSeries("P");
+    private final TimeSeries ki_tq_02 = new TimeSeries("I");
+    private final TimeSeries kd_tq_02 = new TimeSeries("D");
     private JFreeChart chart_tq1;
     private JFreeChart chart_tq2;
     private JFreeChart chart_calculados_tq1;
@@ -522,7 +522,7 @@ public class iPump extends javax.swing.JFrame {
         select_tipo_controle_mf.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Simples", "Cascata" }));
         select_tipo_controle_mf.setEnabled(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controlador 1"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mestre"));
 
         select_controle_ctrl1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Controle...", "P", "PI", "PD", "PID", "PI-D" }));
         select_controle_ctrl1.setEnabled(false);
@@ -685,7 +685,7 @@ public class iPump extends javax.swing.JFrame {
                 .addGap(15, 15, 15))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Controlador 2"));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Escravo"));
 
         select_controle_ctrl2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Controle...", "P", "PI", "PD", "PID", "PI-D" }));
         select_controle_ctrl2.setEnabled(false);

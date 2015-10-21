@@ -127,17 +127,49 @@ public class SuperIPump {
             try {
                 JSONObject obj = (JSONObject) new JSONParser().parse(jsonData);
 
-                sptq1 = Float.parseFloat(obj.get("sptq_1").toString());
-                sptq2 = Float.parseFloat(obj.get("sptq_2").toString());
-                mvtq1 = Float.parseFloat(obj.get("mvtq_1").toString());
-                mvtq2 = Float.parseFloat(obj.get("mvtq_2").toString());
-                pvtq1 = Float.parseFloat(obj.get("pvtq_1").toString());
-                pvtq2 = Float.parseFloat(obj.get("pvtq_2").toString());
-                tp = Float.parseFloat(obj.get("tp").toString());
-                tr = Float.parseFloat(obj.get("tr").toString());
-                ts = Float.parseFloat(obj.get("ts").toString());
-                mp = Float.parseFloat(obj.get("mp").toString());
-                ess = Float.parseFloat(obj.get("ess").toString());
+                if (jsonData.contains("sptq_1")) {
+                    sptq1 = Float.parseFloat(obj.get("sptq_1").toString());
+                }
+
+                if (jsonData.contains("sptq_2")) {
+                    sptq2 = Float.parseFloat(obj.get("sptq_2").toString());
+                }
+
+                if (jsonData.contains("mvtq_1")) {
+                    mvtq1 = Float.parseFloat(obj.get("mvtq_1").toString());
+                }
+
+                if (jsonData.contains("mvtq_2")) {
+                    mvtq2 = Float.parseFloat(obj.get("mvtq_2").toString());
+                }
+
+                if (jsonData.contains("pvtq_1")) {
+                    pvtq1 = Float.parseFloat(obj.get("pvtq_1").toString());
+                }
+
+                if (jsonData.contains("pvtq_2")) {
+                    pvtq2 = Float.parseFloat(obj.get("pvtq_2").toString());
+                }
+
+                if (jsonData.contains("tp")) {
+                    tp = Float.parseFloat(obj.get("tp").toString());
+                }
+
+                if (jsonData.contains("tr")) {
+                    tr = Float.parseFloat(obj.get("tr").toString());
+                }
+
+                if (jsonData.contains("ts")) {
+                    ts = Float.parseFloat(obj.get("ts").toString());
+                }
+
+                if (jsonData.contains("mp")) {
+                    mp = Float.parseFloat(obj.get("mp").toString());
+                }
+
+                if (jsonData.contains("ess")) {
+                    ess = Float.parseFloat(obj.get("ess").toString());
+                }
 
             } catch (ParseException ex) {
 

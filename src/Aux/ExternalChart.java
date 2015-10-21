@@ -8,13 +8,16 @@ package Aux;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -24,7 +27,7 @@ import org.jfree.data.xy.XYDataset;
  * @author Rodrigo
  */
 public class ExternalChart extends javax.swing.JFrame {
-    
+
     public ExternalChart() {
         initComponents();
     }
@@ -108,7 +111,7 @@ public class ExternalChart extends javax.swing.JFrame {
         );
 
         chart.setBackgroundPaint(Color.white);
-        
+
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
@@ -116,18 +119,24 @@ public class ExternalChart extends javax.swing.JFrame {
         plot.setDomainCrosshairVisible(true);
         plot.setRangeCrosshairVisible(false);
 
-        final XYItemRenderer renderer = plot.getRenderer();
-        if (renderer instanceof StandardXYItemRenderer) {
-            final StandardXYItemRenderer rr = (StandardXYItemRenderer) renderer;
-            rr.setShapesFilled(true);
-            renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-            renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+        XYItemRenderer r = plot.getRenderer();
+
+        if (r instanceof XYLineAndShapeRenderer) {
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+
+            renderer.setSeriesPaint(0, Color.RED);
+            renderer.setSeriesPaint(1, Color.BLUE);
+            renderer.setSeriesPaint(2, Color.black);
+
         }
+
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("k:m:s"));
 
         return chart;
 
     }
-    
+
     private XYDataset setDatasetTQ(TimeSeries mv_tq, TimeSeries sp_tq, TimeSeries pv_tq) {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
@@ -137,8 +146,8 @@ public class ExternalChart extends javax.swing.JFrame {
 
         return dataset;
     }
-    
-    public void setChart(TimeSeries mv_tq, TimeSeries sp_tq, TimeSeries pv_tq){
+
+    public void setChart(TimeSeries mv_tq, TimeSeries sp_tq, TimeSeries pv_tq) {
         final XYDataset dataset = setDatasetTQ(mv_tq, sp_tq, pv_tq);
         final JFreeChart chart = createChartTQ(dataset);
         final ChartPanel chartPanel = new ChartPanel(chart);
@@ -148,11 +157,11 @@ public class ExternalChart extends javax.swing.JFrame {
         panel_chart.add(chartPanel, BorderLayout.CENTER);
         panel_chart.validate();
     }
-    
-    public void setBorderTitle(String title){
+
+    public void setBorderTitle(String title) {
         panel_chart.setBorder(new TitledBorder(title));
     }
-    
+
     /**
      * @param args the command line arguments
      */
