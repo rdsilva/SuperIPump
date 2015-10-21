@@ -47,18 +47,18 @@ import org.jfree.data.xy.XYDataset;
 public class iPump extends javax.swing.JFrame {
 
     // Variaveis dos graficos
-    private final TimeSeries mv_tq_01 = new TimeSeries("MV");
-    private final TimeSeries mv_tq_02 = new TimeSeries("MV");
-    private final TimeSeries sp_tq_01 = new TimeSeries("SP");
-    private final TimeSeries sp_tq_02 = new TimeSeries("SP");
-    private final TimeSeries pv_tq_01 = new TimeSeries("PV");
-    private final TimeSeries pv_tq_02 = new TimeSeries("PV");
-    private final TimeSeries p_tq_01 = new TimeSeries("P");
-    private final TimeSeries i_tq_01 = new TimeSeries("I");
-    private final TimeSeries d_tq_01 = new TimeSeries("D");
-    private final TimeSeries p_tq_02 = new TimeSeries("P");
-    private final TimeSeries i_tq_02 = new TimeSeries("I");
-    private final TimeSeries d_tq_02 = new TimeSeries("D");
+    private TimeSeries mv_tq_01 = new TimeSeries("MV");
+    private TimeSeries mv_tq_02 = new TimeSeries("MV");
+    private TimeSeries sp_tq_01 = new TimeSeries("SP");
+    private TimeSeries sp_tq_02 = new TimeSeries("SP");
+    private TimeSeries pv_tq_01 = new TimeSeries("PV");
+    private TimeSeries pv_tq_02 = new TimeSeries("PV");
+    private TimeSeries p_tq_01 = new TimeSeries("P");
+    private TimeSeries i_tq_01 = new TimeSeries("I");
+    private TimeSeries d_tq_01 = new TimeSeries("D");
+    private TimeSeries p_tq_02 = new TimeSeries("P");
+    private TimeSeries i_tq_02 = new TimeSeries("I");
+    private TimeSeries d_tq_02 = new TimeSeries("D");
     private JFreeChart chart_tq1;
     private JFreeChart chart_tq2;
     private JFreeChart chart_calculados_tq1;
@@ -323,7 +323,7 @@ public class iPump extends javax.swing.JFrame {
         pbar_tq2 = new javax.swing.JProgressBar();
         lbl_nivel_tq1 = new javax.swing.JLabel();
         lbl_nivel_tq2 = new javax.swing.JLabel();
-        btn_emergencia = new javax.swing.JButton();
+        btn_reset = new javax.swing.JButton();
         btn_malha = new javax.swing.JToggleButton();
         btn_windup = new javax.swing.JToggleButton();
         btn_enviar = new javax.swing.JButton();
@@ -431,12 +431,12 @@ public class iPump extends javax.swing.JFrame {
         lbl_nivel_tq2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_nivel_tq2.setText("XX cm");
 
-        btn_emergencia.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        btn_emergencia.setForeground(java.awt.Color.red);
-        btn_emergencia.setText("EMERGÊNCIA");
-        btn_emergencia.addActionListener(new java.awt.event.ActionListener() {
+        btn_reset.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btn_reset.setForeground(java.awt.Color.red);
+        btn_reset.setLabel("RESET");
+        btn_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_emergenciaActionPerformed(evt);
+                btn_resetActionPerformed(evt);
             }
         });
 
@@ -988,7 +988,7 @@ public class iPump extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(select_tanque, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_windup, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(select_tipo_controle_mf, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_malha, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1048,7 +1048,7 @@ public class iPump extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(select_tanque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_emergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btn_malha, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1087,9 +1087,90 @@ public class iPump extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_emergenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_emergenciaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_emergenciaActionPerformed
+    private void btn_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_resetActionPerformed
+        // Este botão reseta todas as configurações do Cliente e do Middleware
+
+        // Resetando as variaveis do cliente
+        btn_malha.setSelected(true);
+        btn_malha.setText("Malha ABERTA");
+        select_controle_ctrl1.setEnabled(false);
+        select_controle_ctrl1.setSelectedIndex(0);
+        select_controle_ctrl2.setEnabled(false);
+        select_controle_ctrl2.setSelectedIndex(0);
+        select_tipo_controle_mf.setEnabled(true);
+        select_tipo_controle_mf.setSelectedIndex(0);
+        select_sinal.setSelectedIndex(0);
+        select_tanque.setSelectedIndex(0);
+        input_kp_ctrl1.setText("");
+        input_ki_ctrl1.setText("");
+        input_kd_ctrl1.setText("");
+        input_kp_ctrl2.setText("");
+        input_ki_ctrl2.setText("");
+        input_kd_ctrl2.setText("");
+        input_amplitude_max.setText("");
+        input_amplitude_min.setText("");
+        input_periodo_max.setText("");
+        input_periodo_min.setText("");
+        input_offset.setText("");
+        malha_aberta = true;
+        amplitude_min = 0;
+        amplitude_max = 0;
+        periodo_min = 0;
+        periodo_max = 0;
+        offset = 0;
+        Kp_ctrl1 = 0;
+        Ki_ctrl1 = 0;
+        Kd_ctrl1 = 0;
+        Kp_ctrl2 = 0;
+        Ki_ctrl2 = 0;
+        Kd_ctrl2 = 0;
+        Tr = 0;
+        Mp = 0;
+        Ts = 0;
+        tanque = 0;
+
+        // Resentando os gráficos
+        clearChart();
+        
+        // Limpando o LOG
+        log_area.setText("");
+
+        // Enviando o comando para o middleware
+        JsonObjectBuilder json = Json.createObjectBuilder();
+        JsonObjectBuilder json_sinal = Json.createObjectBuilder();
+        json_sinal.add("tipo", sinal)
+                .add("amp_max", 0)
+                .add("amp_min", 0)
+                .add("periodo_max", 0)
+                .add("periodo_min", 0)
+                .add("offset", 0);
+
+        json.add("comando", 1)
+                .add("malha_aberta", true)
+                .add("tanque", tanque)
+                .add("Tr", 0)
+                .add("Ts", 0)
+                .add("Mp", 0);
+
+        json.add("sinal", json_sinal);
+
+        JsonObject json_final = json.build();
+
+        StringWriter stWriter = new StringWriter();
+
+        try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
+            jsonWriter.writeObject(json_final);
+        }
+
+        String jsonData = stWriter.toString();
+
+        //gerando log no prompt de log
+        setLog("$ RESETADO \n" + jsonData + "\n-----------------\n");
+        //---------
+
+        String sendData = cliente.sendData(jsonData);
+        System.out.println(sendData);
+    }//GEN-LAST:event_btn_resetActionPerformed
 
     private void btn_enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enviarActionPerformed
 
@@ -1524,7 +1605,6 @@ public class iPump extends javax.swing.JFrame {
     }
 
     // SET DATAS
-    
     public void setDataTQ1(float sp, float mv, float pv, float p, float i, float d) {
         pbar_tq1.setValue((int) pv);
         lbl_nivel_tq1.setText("<html><b>" + String.format("%.2f", pv) + "</b> cm</html>");
@@ -1533,7 +1613,7 @@ public class iPump extends javax.swing.JFrame {
         mv_tq_01.addOrUpdate(new Millisecond(), mv);
         sp_tq_01.addOrUpdate(new Millisecond(), sp);
         pv_tq_01.addOrUpdate(new Millisecond(), pv);
-        
+
         // VARIAVEIS CALCULADAS
         p_tq_01.addOrUpdate(new Millisecond(), p);
         i_tq_01.addOrUpdate(new Millisecond(), i);
@@ -1549,7 +1629,7 @@ public class iPump extends javax.swing.JFrame {
         mv_tq_02.addOrUpdate(new Millisecond(), mv);
         sp_tq_02.addOrUpdate(new Millisecond(), sp);
         pv_tq_02.addOrUpdate(new Millisecond(), pv);
-        
+
         // VARIAVEIS CALCULADAS
         p_tq_02.addOrUpdate(new Millisecond(), p);
         i_tq_02.addOrUpdate(new Millisecond(), i);
@@ -1566,7 +1646,6 @@ public class iPump extends javax.swing.JFrame {
     }
 
     // GRÁFICOS
-    
     private void createChartTQ1() {
         final XYDataset dataset = createDatasetTQ1();
         final JFreeChart chart = createChartTQ(dataset);
@@ -1613,7 +1692,6 @@ public class iPump extends javax.swing.JFrame {
     }
 
     // SERIES
-    
     private XYDataset createDatasetTQ1() {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
@@ -1671,7 +1749,6 @@ public class iPump extends javax.swing.JFrame {
     }
 
     //GRÁFICO GENERICO
-    
     private JFreeChart createChartTQ(final XYDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createTimeSeriesChart(
@@ -1694,23 +1771,40 @@ public class iPump extends javax.swing.JFrame {
         plot.setRangeCrosshairVisible(false);
 
         XYItemRenderer r = plot.getRenderer();
-        
+
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
 
             renderer.setSeriesPaint(0, Color.RED);
             renderer.setSeriesPaint(1, Color.BLUE);
             renderer.setSeriesPaint(2, Color.black);
-            
+
             renderer.setSeriesVisibleInLegend(0, true, true);
             renderer.setSeriesVisibleInLegend(1, true, true);
             renderer.setSeriesVisibleInLegend(2, true, true);
         }
-        
+
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("k:mm:s"));
 
         return chart;
+
+    }
+
+    private void clearChart() {
+
+        this.mv_tq_01.clear();
+        this.mv_tq_02.clear();
+        this.sp_tq_01.clear();
+        this.sp_tq_02.clear();
+        this.pv_tq_01.clear();
+        this.pv_tq_02.clear();
+        this.p_tq_01.clear();
+        this.i_tq_01.clear();
+        this.d_tq_01.clear();
+        this.p_tq_02.clear();
+        this.i_tq_02.clear();
+        this.d_tq_02.clear();
 
     }
 
@@ -1759,10 +1853,10 @@ public class iPump extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_emergencia;
     private javax.swing.JButton btn_enviar;
     private javax.swing.JButton btn_limpar_log;
     private javax.swing.JToggleButton btn_malha;
+    private javax.swing.JButton btn_reset;
     private javax.swing.JButton btn_salvar_log;
     private javax.swing.JToggleButton btn_windup;
     private javax.swing.JTextField input_amplitude_max;
