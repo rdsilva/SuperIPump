@@ -391,6 +391,7 @@ public class iPump extends javax.swing.JFrame {
         menu_grafico_externo_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_tq2 = new javax.swing.JMenuItem();
         menu_grafico_externo_ambos_tq = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menu_grafico_externo_calc_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_calc_tq2 = new javax.swing.JMenuItem();
@@ -926,6 +927,9 @@ public class iPump extends javax.swing.JFrame {
         });
         jMenu4.add(menu_grafico_externo_ambos_tq);
 
+        jMenuItem1.setText("SP's e Níveis");
+        jMenu4.add(jMenuItem1);
+
         menu_graficos.add(jMenu4);
 
         jMenu5.setText("Parâmetros Calculadas");
@@ -947,6 +951,11 @@ public class iPump extends javax.swing.JFrame {
         jMenu5.add(menu_grafico_externo_calc_tq2);
 
         menu_grafico_externo_calc_ambos.setText("Ambos");
+        menu_grafico_externo_calc_ambos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_grafico_externo_calc_ambosActionPerformed(evt);
+            }
+        });
         jMenu5.add(menu_grafico_externo_calc_ambos);
 
         menu_graficos.add(jMenu5);
@@ -1154,7 +1163,7 @@ public class iPump extends javax.swing.JFrame {
 
         // Resentando os gráficos
         clearChart();
-        
+
         // Limpando o LOG
         log_area.setText("");
 
@@ -1170,7 +1179,7 @@ public class iPump extends javax.swing.JFrame {
 
         json.add("comando", 1)
                 .add("malha_aberta", true)
-                .add("tanque", tanque)
+                .add("tanque", 0)
                 .add("Tr", 0)
                 .add("Ts", 0)
                 .add("Mp", 0);
@@ -1474,8 +1483,20 @@ public class iPump extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_grafico_externo_calc_tq2ActionPerformed
 
     private void menu_grafico_externo_ambos_tqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_ambos_tqActionPerformed
-        // TODO add your handling code here:
+        ExternalTwoChart ext_chart = new ExternalTwoChart();
+        ext_chart.setChart_top(mv_tq_01, sp_tq_01, pv_tq_01, "Tanque 1");
+        ext_chart.setChart_bottom(mv_tq_02, sp_tq_02, pv_tq_02, "Tanque 2");
+        ext_chart.setTitle("Tanques - Ambos");
+        ext_chart.setVisible(true);
     }//GEN-LAST:event_menu_grafico_externo_ambos_tqActionPerformed
+
+    private void menu_grafico_externo_calc_ambosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_calc_ambosActionPerformed
+        ExternalTwoChart ext_chart = new ExternalTwoChart();
+        ext_chart.setChart_top(p_tq_01, i_tq_01, d_tq_01, "Parâmetros Calculados - Mestre");
+        ext_chart.setChart_bottom(p_tq_02, i_tq_02, d_tq_02, "Parâmetros Calculados - Escravo");
+        ext_chart.setTitle("Parâmetros Calculados - Ambos");
+        ext_chart.setVisible(true);
+    }//GEN-LAST:event_menu_grafico_externo_calc_ambosActionPerformed
 
     private void readVars() {
         //Amplitude Maxima
@@ -1918,6 +1939,7 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
