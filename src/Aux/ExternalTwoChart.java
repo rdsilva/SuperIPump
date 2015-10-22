@@ -176,7 +176,7 @@ public class ExternalTwoChart extends javax.swing.JFrame {
         chartPanel.setMouseZoomable(true, false);
         panel_chart_top.setLayout(new java.awt.BorderLayout());
         panel_chart_top.add(chartPanel, BorderLayout.CENTER);
-        panel_chart_bottom.setBorder(new TitledBorder(title));
+        panel_chart_top.setBorder(new TitledBorder(title));
         panel_chart_top.validate();
     }
 
