@@ -24,9 +24,9 @@ import org.jfree.data.xy.XYDataset;
  *
  * @author Rodrigo
  */
-public class ExternalChart extends javax.swing.JFrame {
+public class ExternalChart2 extends javax.swing.JFrame {
 
-    public ExternalChart() {
+    public ExternalChart2() {
         initComponents();
     }
 
@@ -122,13 +122,15 @@ public class ExternalChart extends javax.swing.JFrame {
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
 
-            renderer.setSeriesPaint(0, Color.RED);
-            renderer.setSeriesPaint(1, Color.BLUE);
-            renderer.setSeriesPaint(2, Color.black);
+            renderer.setSeriesPaint(0, Color.BLUE);
+            renderer.setSeriesPaint(1, Color.RED);
+            renderer.setSeriesPaint(2, Color.BLACK);
+            renderer.setSeriesPaint(3, Color.MAGENTA);
 
             renderer.setSeriesVisibleInLegend(0, true, true);
             renderer.setSeriesVisibleInLegend(1, true, true);
             renderer.setSeriesVisibleInLegend(2, true, true);
+            renderer.setSeriesVisibleInLegend(3, true, true);
            
         }
         
@@ -139,18 +141,19 @@ public class ExternalChart extends javax.swing.JFrame {
 
     }
 
-    private XYDataset setDatasetTQ(TimeSeries mv_tq, TimeSeries sp_tq, TimeSeries pv_tq) {
+    private XYDataset setDatasetTQ(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
-        dataset.addSeries(mv_tq);
-        dataset.addSeries(sp_tq);
-        dataset.addSeries(pv_tq);
+        dataset.addSeries(sp_1);
+        dataset.addSeries(sp_2);
+        dataset.addSeries(pv_1);
+        dataset.addSeries(pv_2);
 
         return dataset;
     }
 
-    public void setChart(TimeSeries mv_tq, TimeSeries sp_tq, TimeSeries pv_tq) {
-        final XYDataset dataset = setDatasetTQ(mv_tq, sp_tq, pv_tq);
+    public void setChart(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) {
+        final XYDataset dataset = setDatasetTQ(sp_1, sp_2, pv_1, pv_2);
         final JFreeChart chart = createChartTQ(dataset);
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(95, 25));
@@ -181,20 +184,21 @@ public class ExternalChart extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExternalChart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExternalChart2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExternalChart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExternalChart2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExternalChart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExternalChart2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExternalChart.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ExternalChart2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ExternalChart().setVisible(true);
+                new ExternalChart2().setVisible(true);
             }
         });
     }

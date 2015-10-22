@@ -391,7 +391,7 @@ public class iPump extends javax.swing.JFrame {
         menu_grafico_externo_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_tq2 = new javax.swing.JMenuItem();
         menu_grafico_externo_ambos_tq = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menu_grafico_externo_sps_niveis = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menu_grafico_externo_calc_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_calc_tq2 = new javax.swing.JMenuItem();
@@ -927,8 +927,13 @@ public class iPump extends javax.swing.JFrame {
         });
         jMenu4.add(menu_grafico_externo_ambos_tq);
 
-        jMenuItem1.setText("SP's e Níveis");
-        jMenu4.add(jMenuItem1);
+        menu_grafico_externo_sps_niveis.setText("SP's e Níveis");
+        menu_grafico_externo_sps_niveis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_grafico_externo_sps_niveisActionPerformed(evt);
+            }
+        });
+        jMenu4.add(menu_grafico_externo_sps_niveis);
 
         menu_graficos.add(jMenu4);
 
@@ -1498,6 +1503,14 @@ public class iPump extends javax.swing.JFrame {
         ext_chart.setVisible(true);
     }//GEN-LAST:event_menu_grafico_externo_calc_ambosActionPerformed
 
+    private void menu_grafico_externo_sps_niveisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_sps_niveisActionPerformed
+        ExternalChart2 ext_chart = new ExternalChart2();
+        ext_chart.setChart(sp_tq_01, sp_tq_02, pv_tq_01, pv_tq_02);
+        ext_chart.setBorderTitle("Níveis Configurados e Reais");
+        ext_chart.setTitle("SP's e Níveis");
+        ext_chart.setVisible(true);
+    }//GEN-LAST:event_menu_grafico_externo_sps_niveisActionPerformed
+
     private void readVars() {
         //Amplitude Maxima
         if (input_amplitude_max.isEnabled()) {
@@ -1939,7 +1952,6 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1965,6 +1977,7 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JMenuItem menu_grafico_externo_calc_ambos;
     private javax.swing.JMenuItem menu_grafico_externo_calc_tq1;
     private javax.swing.JMenuItem menu_grafico_externo_calc_tq2;
+    private javax.swing.JMenuItem menu_grafico_externo_sps_niveis;
     private javax.swing.JMenuItem menu_grafico_externo_tq1;
     private javax.swing.JMenuItem menu_grafico_externo_tq2;
     private javax.swing.JMenu menu_graficos;

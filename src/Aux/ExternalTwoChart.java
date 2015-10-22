@@ -122,7 +122,7 @@ public class ExternalTwoChart extends javax.swing.JFrame {
                 " ",
                 " ",
                 dataset,
-                false,
+                true,
                 true,
                 false
         );
