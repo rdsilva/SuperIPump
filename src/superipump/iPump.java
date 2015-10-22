@@ -387,10 +387,14 @@ public class iPump extends javax.swing.JFrame {
         menu_limpar_log = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         menu_graficos = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         menu_grafico_externo_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_tq2 = new javax.swing.JMenuItem();
+        menu_grafico_externo_ambos_tq = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
         menu_grafico_externo_calc_tq1 = new javax.swing.JMenuItem();
         menu_grafico_externo_calc_tq2 = new javax.swing.JMenuItem();
+        menu_grafico_externo_calc_ambos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menu_sobre_ipump = new javax.swing.JMenuItem();
         menu_sobre_grupo = new javax.swing.JMenuItem();
@@ -896,13 +900,15 @@ public class iPump extends javax.swing.JFrame {
 
         menu_graficos.setText("Abrir Gráficos");
 
+        jMenu4.setText("Tanques");
+
         menu_grafico_externo_tq1.setText("Tanque 1");
         menu_grafico_externo_tq1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_grafico_externo_tq1ActionPerformed(evt);
             }
         });
-        menu_graficos.add(menu_grafico_externo_tq1);
+        jMenu4.add(menu_grafico_externo_tq1);
 
         menu_grafico_externo_tq2.setText("Tanque 2");
         menu_grafico_externo_tq2.addActionListener(new java.awt.event.ActionListener() {
@@ -910,23 +916,40 @@ public class iPump extends javax.swing.JFrame {
                 menu_grafico_externo_tq2ActionPerformed(evt);
             }
         });
-        menu_graficos.add(menu_grafico_externo_tq2);
+        jMenu4.add(menu_grafico_externo_tq2);
 
-        menu_grafico_externo_calc_tq1.setText("Calculado - Controlador 1");
+        menu_grafico_externo_ambos_tq.setText("Ambos");
+        menu_grafico_externo_ambos_tq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_grafico_externo_ambos_tqActionPerformed(evt);
+            }
+        });
+        jMenu4.add(menu_grafico_externo_ambos_tq);
+
+        menu_graficos.add(jMenu4);
+
+        jMenu5.setText("Parâmetros Calculadas");
+
+        menu_grafico_externo_calc_tq1.setText("Mestre");
         menu_grafico_externo_calc_tq1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_grafico_externo_calc_tq1ActionPerformed(evt);
             }
         });
-        menu_graficos.add(menu_grafico_externo_calc_tq1);
+        jMenu5.add(menu_grafico_externo_calc_tq1);
 
-        menu_grafico_externo_calc_tq2.setText("Calculado - Controlador 2");
+        menu_grafico_externo_calc_tq2.setText("Escravo");
         menu_grafico_externo_calc_tq2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_grafico_externo_calc_tq2ActionPerformed(evt);
             }
         });
-        menu_graficos.add(menu_grafico_externo_calc_tq2);
+        jMenu5.add(menu_grafico_externo_calc_tq2);
+
+        menu_grafico_externo_calc_ambos.setText("Ambos");
+        jMenu5.add(menu_grafico_externo_calc_ambos);
+
+        menu_graficos.add(jMenu5);
 
         jMenu1.add(menu_graficos);
 
@@ -1450,6 +1473,10 @@ public class iPump extends javax.swing.JFrame {
         ext_chart.setVisible(true);
     }//GEN-LAST:event_menu_grafico_externo_calc_tq2ActionPerformed
 
+    private void menu_grafico_externo_ambos_tqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_ambos_tqActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu_grafico_externo_ambos_tqActionPerformed
+
     private void readVars() {
         //Amplitude Maxima
         if (input_amplitude_max.isEnabled()) {
@@ -1888,6 +1915,8 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
@@ -1910,6 +1939,8 @@ public class iPump extends javax.swing.JFrame {
     private javax.swing.JScrollPane log_pane;
     private javax.swing.JMenuItem menu_conectar;
     private javax.swing.JMenuItem menu_desconectar;
+    private javax.swing.JMenuItem menu_grafico_externo_ambos_tq;
+    private javax.swing.JMenuItem menu_grafico_externo_calc_ambos;
     private javax.swing.JMenuItem menu_grafico_externo_calc_tq1;
     private javax.swing.JMenuItem menu_grafico_externo_calc_tq2;
     private javax.swing.JMenuItem menu_grafico_externo_tq1;

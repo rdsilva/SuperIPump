@@ -70,38 +70,65 @@
                 <Property name="text" type="java.lang.String" value="Abrir Gr&#xe1;ficos"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_tq1">
+                <Menu class="javax.swing.JMenu" name="jMenu4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tanque 1"/>
+                    <Property name="text" type="java.lang.String" value="Tanques"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_tq1ActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_tq2">
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_tq1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Tanque 1"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_tq1ActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_tq2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Tanque 2"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_tq2ActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_ambos_tq">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Ambos"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_ambos_tqActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
+                <Menu class="javax.swing.JMenu" name="jMenu5">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tanque 2"/>
+                    <Property name="text" type="java.lang.String" value="Par&#xe2;metros Calculadas"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_tq2ActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_calc_tq1">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Calculado - Controlador 1"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_calc_tq1ActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_calc_tq2">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Calculado - Controlador 2"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_calc_tq2ActionPerformed"/>
-                  </Events>
-                </MenuItem>
+                  <SubComponents>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_calc_tq1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Mestre"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_calc_tq1ActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_calc_tq2">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Escravo"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menu_grafico_externo_calc_tq2ActionPerformed"/>
+                      </Events>
+                    </MenuItem>
+                    <MenuItem class="javax.swing.JMenuItem" name="menu_grafico_externo_calc_ambos">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Ambos"/>
+                      </Properties>
+                    </MenuItem>
+                  </SubComponents>
+                </Menu>
               </SubComponents>
             </Menu>
           </SubComponents>
