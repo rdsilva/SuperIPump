@@ -113,7 +113,7 @@ public class SuperIPump {
                     view.setDataTQ1(sptq1, mvtq1, pvtq1, p_master, i_master, d_master);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2, p_slave, i_slave, d_slave);
                     view.setDataCalc(tr, tp, ts, mp, ess);
-                    Thread.sleep(500L);
+                    Thread.sleep(100L);
                 }
             } catch (InterruptedException iex) {
             }

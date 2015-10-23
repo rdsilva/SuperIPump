@@ -18,6 +18,8 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -1505,10 +1507,14 @@ public class iPump extends javax.swing.JFrame {
 
     private void menu_grafico_externo_sps_niveisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_grafico_externo_sps_niveisActionPerformed
         ExternalChart2 ext_chart = new ExternalChart2();
-        ext_chart.setChart(sp_tq_01, sp_tq_02, pv_tq_01, pv_tq_02);
-        ext_chart.setBorderTitle("Níveis Configurados e Reais");
-        ext_chart.setTitle("SP's e Níveis");
-        ext_chart.setVisible(true);
+        try {
+            ext_chart.setChart(sp_tq_01, sp_tq_02, pv_tq_01, pv_tq_02);
+            ext_chart.setBorderTitle("Níveis Configurados e Reais");
+            ext_chart.setTitle("SP's e Níveis");
+            ext_chart.setVisible(true);
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(iPump.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_menu_grafico_externo_sps_niveisActionPerformed
 
     private void readVars() {

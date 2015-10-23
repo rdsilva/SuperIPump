@@ -131,8 +131,10 @@ public class ExternalChart2 extends javax.swing.JFrame {
             renderer.setSeriesVisibleInLegend(1, true, true);
             renderer.setSeriesVisibleInLegend(2, true, true);
             renderer.setSeriesVisibleInLegend(3, true, true);
-           
+            
         }
+        
+//        plot.getLegendItems().get(0).setSeriesKey("SP-1");
         
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("k:mm:s"));
@@ -141,9 +143,9 @@ public class ExternalChart2 extends javax.swing.JFrame {
 
     }
 
-    private XYDataset setDatasetTQ(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) {
+    private XYDataset setDatasetTQ(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) throws CloneNotSupportedException {
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
-
+        
         dataset.addSeries(sp_1);
         dataset.addSeries(sp_2);
         dataset.addSeries(pv_1);
@@ -152,7 +154,7 @@ public class ExternalChart2 extends javax.swing.JFrame {
         return dataset;
     }
 
-    public void setChart(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) {
+    public void setChart(TimeSeries sp_1, TimeSeries sp_2, TimeSeries pv_1, TimeSeries pv_2) throws CloneNotSupportedException {
         final XYDataset dataset = setDatasetTQ(sp_1, sp_2, pv_1, pv_2);
         final JFreeChart chart = createChartTQ(dataset);
         final ChartPanel chartPanel = new ChartPanel(chart);
