@@ -1837,36 +1837,57 @@ public class iPump extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
 
-            
             //---------------------------------------------JSON
             JsonObjectBuilder json = Json.createObjectBuilder();
             JsonObjectBuilder json_polo = Json.createObjectBuilder();
             JsonObjectBuilder json_ganho = Json.createObjectBuilder();
-            
+
             json.add("comando", 3);
-            
+
             if (index_raizes > 0) { // enviar os polos
                 readVarsPolos();
-                
+
                 json.add("calc_direto", true);
 
-                json_polo.add("real_1", polo_real_1)
-                    .add("img_1", polo_img_1)
-                    .add("real_2", polo_real_2)
-                    .add("img_2", polo_img_2);
-                
+                switch (index_raizes) {
+                    case 1: // conjugados
+                        json_polo.add("real_1", polo_real_1)
+                                .add("img_1", polo_img_1)
+                                .add("real_2", 0)
+                                .add("img_2", 0);
+                        break;
+                    case 2: // complexos
+                        json_polo.add("real_1", polo_real_1)
+                                .add("img_1", polo_img_1)
+                                .add("real_2", polo_real_2)
+                                .add("img_2", polo_img_2);
+                        break;
+                    case 3: // complexo e real
+                        json_polo.add("real_1", polo_real_1)
+                                .add("img_1", polo_img_1)
+                                .add("real_2", polo_real_2)
+                                .add("img_2", 0);
+                        break;
+                    case 4: // reais
+                        json_polo.add("real_1", polo_real_1)
+                                .add("img_1", 0)
+                                .add("real_2", polo_real_2)
+                                .add("img_2", 0);
+                        break;
+                }
+
             } else { // enviar os ganhos 
                 readVarsGanhos();
-                
+
                 json.add("calc_direto", false);
-                
+
                 json_ganho.add("ganho_1", ganho_1)
-                    .add("ganho_2", ganho_2);
+                        .add("ganho_2", ganho_2);
             }
 
             json.add("polos", json_polo);
             json.add("ganhos", json_ganho);
-            
+
             JsonObject json_final = json.build();
 
             StringWriter stWriter = new StringWriter();
@@ -2152,28 +2173,28 @@ public class iPump extends javax.swing.JFrame {
         }
     }
 
-    private void readVarsGanhos(){
-        
-        if(input_ganho_1.getText().isEmpty()){
+    private void readVarsGanhos() {
+
+        if (input_ganho_1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                        "Você deve informar o ganho 1!",
-                        "Cuidado!",
-                        JOptionPane.ERROR_MESSAGE);
+                    "Você deve informar o ganho 1!",
+                    "Cuidado!",
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             ganho_1 = Double.parseDouble(input_ganho_1.getText());
         }
-        
-        if(input_ganho_2.getText().isEmpty()){
+
+        if (input_ganho_2.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                        "Você deve informar o ganho 2!",
-                        "Cuidado!",
-                        JOptionPane.ERROR_MESSAGE);
+                    "Você deve informar o ganho 2!",
+                    "Cuidado!",
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             ganho_2 = Double.parseDouble(input_ganho_2.getText());
         }
-        
+
     }
-    
+
     // SET DATAS
     public void setDataTQ1(float sp, float mv, float pv, float p, float i, float d) {
         pbar_tq1.setValue((int) pv);
