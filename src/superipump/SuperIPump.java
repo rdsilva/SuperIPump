@@ -9,6 +9,7 @@ import Testes.ClienteSocket;
 import com.orsoncharts.util.json.JSONObject;
 import com.orsoncharts.util.json.parser.JSONParser;
 import com.orsoncharts.util.json.parser.ParseException;
+import java.awt.Frame;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,6 +52,8 @@ public class SuperIPump {
     public static void main(String[] args) {
 
         view = new iPump();
+        view.setExtendedState(Frame.MAXIMIZED_BOTH);
+        //view.setUndecorated(true);
         view.setVisible(true);
         view.setEnabled(true);
 
