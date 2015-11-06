@@ -1851,25 +1851,29 @@ public class iPump extends javax.swing.JFrame {
 
                 switch (index_raizes) {
                     case 1: // conjugados
-                        json_polo.add("real_1", polo_real_1)
+                        json_polo.add("tipo", 1)
+                                .add("real_1", polo_real_1)
                                 .add("img_1", polo_img_1)
                                 .add("real_2", 0)
                                 .add("img_2", 0);
                         break;
                     case 2: // complexos
-                        json_polo.add("real_1", polo_real_1)
+                        json_polo.add("tipo", 2)
+                                .add("real_1", polo_real_1)
                                 .add("img_1", polo_img_1)
                                 .add("real_2", polo_real_2)
                                 .add("img_2", polo_img_2);
                         break;
                     case 3: // complexo e real
-                        json_polo.add("real_1", polo_real_1)
+                        json_polo.add("tipo", 3)
+                                .add("real_1", polo_real_1)
                                 .add("img_1", polo_img_1)
                                 .add("real_2", polo_real_2)
                                 .add("img_2", 0);
                         break;
                     case 4: // reais
-                        json_polo.add("real_1", polo_real_1)
+                        json_polo.add("tipo", 4)
+                                .add("real_1", polo_real_1)
                                 .add("img_1", 0)
                                 .add("real_2", polo_real_2)
                                 .add("img_2", 0);
@@ -2236,6 +2240,11 @@ public class iPump extends javax.swing.JFrame {
         lbl_ess.setText("<html>Ess : <b style=\"color:red\">" + String.format("%.2f", ess) + "</b></html>");
     }
 
+    public void setGanhosCalc(float ganho_1, float ganho_2){
+        input_ganho_1.setText("" + ganho_1);
+        input_ganho_2.setText("" + ganho_2);
+    }
+    
     // GRÁFICOS
     private void createChartTQ1() {
         final XYDataset dataset = createDatasetTQ1();

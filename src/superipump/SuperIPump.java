@@ -45,6 +45,8 @@ public class SuperIPump {
     private static float p_slave;
     private static float i_slave;
     private static float d_slave;
+    private static float ganho_1;
+    private static float ganho_2;
     private static iPump view;
 
     private static ClienteSocket cliente;//  = new ClienteSocket();
@@ -116,6 +118,7 @@ public class SuperIPump {
                     view.setDataTQ1(sptq1, mvtq1, pvtq1, p_master, i_master, d_master);
                     view.setDataTQ2(sptq2, mvtq2, pvtq2, p_slave, i_slave, d_slave);
                     view.setDataCalc(tr, tp, ts, mp, ess);
+                    view.setGanhosCalc(ganho_1, ganho_2);
                     Thread.sleep(100L);
                 }
             } catch (InterruptedException iex) {
@@ -202,6 +205,14 @@ public class SuperIPump {
                 
                 if (jsonData.contains("D_slave")) {
                     d_slave = Float.parseFloat(obj.get("D_slave").toString());
+                }
+                
+                if (jsonData.contains("ganho_1")) {
+                    ganho_1 = Float.parseFloat(obj.get("ganho_1").toString());
+                }
+                
+                if (jsonData.contains("ganho_2")) {
+                    ganho_2 = Float.parseFloat(obj.get("ganho_2").toString());
                 }
 
             } catch (ParseException ex) {
